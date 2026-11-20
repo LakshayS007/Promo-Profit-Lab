@@ -1,0 +1,67 @@
+table dim_week
+	lineageTag: 460b4ce1-64e4-5369-92b7-cf4e2393e6a4
+
+	column 'week'
+		dataType: int64
+		formatString: 0
+		lineageTag: e6e264b1-aecd-547d-a060-da376bf006e0
+		summarizeBy: none
+		sourceColumn: week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'week_start'
+		dataType: dateTime
+		formatString: dd mmm
+		lineageTag: 01474065-fd17-5653-9b7e-df87adda51c8
+		summarizeBy: none
+		sourceColumn: week_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'month'
+		dataType: string
+		lineageTag: f2e86b30-3f34-5124-9e33-ba8abe4bb13c
+		summarizeBy: none
+		sourceColumn: month
+		sortByColumn: month_num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'month_num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 05e63df7-60f9-515e-947c-49705e05b062
+		summarizeBy: none
+		sourceColumn: month_num
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'quarter'
+		dataType: string
+		lineageTag: 45174fb8-2a55-5807-8139-8581e865bb86
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'half'
+		dataType: string
+		lineageTag: 0a93f4fb-3453-5560-8410-64c0c9481635
+		summarizeBy: none
+		sourceColumn: half
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_week = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_week.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"week", Int64.Type}, {"week_start", type date}, {"month", type text}, {"month_num", Int64.Type}, {"quarter", type text}, {"half", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

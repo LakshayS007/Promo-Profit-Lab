@@ -1,0 +1,11 @@
+relationship c465a520-65a4-5fe0-8a21-ee856f467d1c
+	fromColumn: fact_promo_event.cell_key
+	toColumn: promo_cells_decisions.cell_key
+
+relationship 3a854a2e-b8a4-58b5-a147-ecbc591ec67b
+	fromColumn: fact_promo_event.week
+	toColumn: dim_week.week
+
+relationship e7620d3b-5525-5b04-8dbb-f71560c6f330
+	fromColumn: fact_promo_event.product_id
+	toColumn: dim_product.product_id

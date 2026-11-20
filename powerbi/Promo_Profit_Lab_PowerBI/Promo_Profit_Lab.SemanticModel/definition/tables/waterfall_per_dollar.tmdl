@@ -1,0 +1,50 @@
+table waterfall_per_dollar
+	lineageTag: 83f28dc5-658e-5fa1-bafc-3cd19a070363
+
+	column 'Index'
+		dataType: int64
+		formatString: 0
+		lineageTag: 28ced224-b1e7-56dc-a509-30098d67555a
+		summarizeBy: none
+		sourceColumn: Index
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'step'
+		dataType: string
+		lineageTag: 1a8cde42-1d22-5bba-ab00-8164cca3764f
+		summarizeBy: none
+		sourceColumn: step
+		sortByColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'per_dollar'
+		dataType: double
+		formatString: "$"#,0.00;-"$"#,0.00
+		lineageTag: ed90dda3-5d91-56b4-a2e6-1310e50c5b3b
+		summarizeBy: sum
+		sourceColumn: per_dollar
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'value'
+		dataType: double
+		lineageTag: 8ff7c7a0-12f6-55f8-a64b-6bccdf047ae5
+		summarizeBy: sum
+		sourceColumn: value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition waterfall_per_dollar = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "waterfall_per_dollar.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"Index", Int64.Type}, {"step", type text}, {"per_dollar", type number}, {"value", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

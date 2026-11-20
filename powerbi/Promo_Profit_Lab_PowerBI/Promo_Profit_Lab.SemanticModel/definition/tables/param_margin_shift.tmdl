@@ -1,0 +1,23 @@
+table param_margin_shift
+	lineageTag: 6e775898-42c9-5577-90ca-1a5fb182d3f8
+
+	column 'margin_shift_pts'
+		dataType: int64
+		formatString: 0
+		lineageTag: b3c821b9-b02b-532d-bd24-1f10809e4903
+		summarizeBy: none
+		sourceColumn: margin_shift_pts
+
+		annotation SummarizationSetBy = Automatic
+
+	partition param_margin_shift = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "param_margin_shift.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"margin_shift_pts", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

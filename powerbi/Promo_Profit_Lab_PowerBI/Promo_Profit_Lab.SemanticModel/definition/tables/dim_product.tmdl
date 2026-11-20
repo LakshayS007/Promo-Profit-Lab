@@ -1,0 +1,73 @@
+table dim_product
+	lineageTag: 1ff38dcc-618c-5e14-a3b3-d7999e2f0296
+
+	column 'product_id'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ee048ac-5718-52be-913e-aa73871482c4
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'department'
+		dataType: string
+		lineageTag: 7a7e5caf-73c6-5d26-b42b-4a8638458336
+		summarizeBy: none
+		sourceColumn: department
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'brand'
+		dataType: string
+		lineageTag: 520c570e-8c47-5e7b-81c7-571d0cfe4da1
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'product_category'
+		dataType: string
+		lineageTag: 9d108de5-d9f5-5f33-9d1b-7fbc9eb93e1a
+		summarizeBy: none
+		sourceColumn: product_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'product_type'
+		dataType: string
+		lineageTag: b5c6f42d-f47c-5277-8e48-1c9a7ef29c8a
+		summarizeBy: none
+		sourceColumn: product_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'gross_margin'
+		dataType: double
+		lineageTag: 3037c6f8-bd0e-5852-b399-bfbe7589888b
+		summarizeBy: sum
+		sourceColumn: gross_margin
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'regular_price'
+		dataType: double
+		lineageTag: 886b4961-16df-5372-b9bc-8a7a9d855e70
+		summarizeBy: sum
+		sourceColumn: regular_price
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_product.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"product_id", Int64.Type}, {"department", type text}, {"brand", type text}, {"product_category", type text}, {"product_type", type text}, {"gross_margin", type number}, {"regular_price", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

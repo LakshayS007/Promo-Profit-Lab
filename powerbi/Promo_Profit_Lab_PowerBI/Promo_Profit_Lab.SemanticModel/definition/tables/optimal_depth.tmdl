@@ -1,0 +1,73 @@
+table optimal_depth
+	lineageTag: e766ea59-7217-5e1e-a9fd-8793ff05ef87
+
+	column 'group'
+		dataType: string
+		lineageTag: 7c2ce12b-608f-5281-88fc-18f9b19606e9
+		summarizeBy: none
+		sourceColumn: group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'supplier_share'
+		dataType: double
+		formatString: 0%
+		lineageTag: ab5c7be0-c8ac-56fc-ac46-879792228d23
+		summarizeBy: none
+		sourceColumn: supplier_share
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'depth_coef'
+		dataType: double
+		lineageTag: be3fe619-c60e-5644-b30e-3da7a7bec3f0
+		summarizeBy: sum
+		sourceColumn: depth_coef
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'depth_coef_se'
+		dataType: double
+		lineageTag: 747916a0-3715-5fc4-aec3-bb4572393991
+		summarizeBy: sum
+		sourceColumn: depth_coef_se
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'margin'
+		dataType: double
+		lineageTag: 7b27caa8-ac84-5337-ba4f-207a3ef334ea
+		summarizeBy: sum
+		sourceColumn: margin
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'optimal_extra_discount'
+		dataType: double
+		formatString: 0%
+		lineageTag: 1459c76e-8b48-5ed3-a7e7-356e948b0cf8
+		summarizeBy: sum
+		sourceColumn: optimal_extra_discount
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'current_extra_discount'
+		dataType: double
+		formatString: 0%
+		lineageTag: 50e8bce2-d1c3-5b59-9d76-58ec9ebd13b4
+		summarizeBy: sum
+		sourceColumn: current_extra_discount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition optimal_depth = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "optimal_depth.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"group", type text}, {"supplier_share", type number}, {"depth_coef", type number}, {"depth_coef_se", type number}, {"margin", type number}, {"optimal_extra_discount", type number}, {"current_extra_discount", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,42 @@
+table plan_bridge
+	lineageTag: c5847308-a91d-5cec-b214-92ef8b3121c0
+
+	column 'Index'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f5f7a17-0342-5140-808b-442b547ee14f
+		summarizeBy: none
+		sourceColumn: Index
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'step'
+		dataType: string
+		lineageTag: 945f44e8-2a4e-5fe6-adf3-b972aef5d4fe
+		summarizeBy: none
+		sourceColumn: step
+		sortByColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'per_million'
+		dataType: int64
+		formatString: "$"#,0;-"$"#,0
+		lineageTag: 8eefdaa6-3957-5950-adf2-3ed214f0d326
+		summarizeBy: sum
+		sourceColumn: per_million
+
+		annotation SummarizationSetBy = Automatic
+
+	partition plan_bridge = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "plan_bridge.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"Index", Int64.Type}, {"step", type text}, {"per_million", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

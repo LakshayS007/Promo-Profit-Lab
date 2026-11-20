@@ -1,0 +1,41 @@
+table pilot_design
+	lineageTag: 29ff7dba-037c-5d19-918f-ff128828f435
+
+	column 'detectable_lift'
+		dataType: double
+		formatString: 0%
+		lineageTag: 6d14b47b-4f5e-5f03-8192-08912ef03e84
+		summarizeBy: none
+		sourceColumn: detectable_lift
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'households_per_arm'
+		dataType: int64
+		formatString: #,0
+		lineageTag: ae71e455-a09d-5dcc-983d-cde0c43458f7
+		summarizeBy: sum
+		sourceColumn: households_per_arm
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'households_per_arm_cuped'
+		dataType: int64
+		formatString: #,0
+		lineageTag: d23e7ce1-13ee-5933-bdcb-24c106800146
+		summarizeBy: sum
+		sourceColumn: households_per_arm_cuped
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pilot_design = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "pilot_design.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"detectable_lift", type number}, {"households_per_arm", Int64.Type}, {"households_per_arm_cuped", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

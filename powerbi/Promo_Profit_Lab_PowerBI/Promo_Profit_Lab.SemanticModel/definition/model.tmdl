@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder", "fact_promo_event", "dim_week", "dim_product", "promo_cells_decisions", "campaign_results", "optimal_depth", "pilot_design", "waterfall_per_dollar", "plan_bridge", "param_supplier_share", "param_margin_shift"]
+
+ref table _Measures
+ref table fact_promo_event
+ref table dim_week
+ref table dim_product
+ref table promo_cells_decisions
+ref table campaign_results
+ref table optimal_depth
+ref table pilot_design
+ref table waterfall_per_dollar
+ref table plan_bridge
+ref table param_supplier_share
+ref table param_margin_shift

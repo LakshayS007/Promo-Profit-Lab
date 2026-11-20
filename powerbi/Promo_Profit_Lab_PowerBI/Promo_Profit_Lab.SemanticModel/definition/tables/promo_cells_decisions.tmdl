@@ -1,0 +1,293 @@
+table promo_cells_decisions
+	lineageTag: 15aadd2c-3310-5a24-979f-209544694dbf
+
+	column 'group'
+		dataType: string
+		lineageTag: 6d18a079-828a-5787-85d7-f6f713b203cf
+		summarizeBy: none
+		sourceColumn: group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'promo_type'
+		dataType: string
+		lineageTag: d2a1d1f4-241c-5fec-8944-52a1d0c8cfbd
+		summarizeBy: none
+		sourceColumn: promo_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'events'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6971ec89-b824-5161-bfe3-ee7bf775927e
+		summarizeBy: sum
+		sourceColumn: events
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'units'
+		dataType: double
+		lineageTag: 87b52dd7-cd83-5134-870b-2bc96258ba91
+		summarizeBy: sum
+		sourceColumn: units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cf_units'
+		dataType: double
+		lineageTag: 92b60264-bd08-5634-a74e-a72f9bf68c40
+		summarizeBy: sum
+		sourceColumn: cf_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'incr_units'
+		dataType: double
+		lineageTag: b7a8c059-5ad1-5ab1-9cb3-4500871143ff
+		summarizeBy: sum
+		sourceColumn: incr_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dip_units'
+		dataType: double
+		lineageTag: 28537223-c9be-515d-a59c-7a8cb15ece9c
+		summarizeBy: sum
+		sourceColumn: dip_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cannibal_units'
+		dataType: double
+		lineageTag: 0c9f6374-7537-5020-8683-a13cf409b290
+		summarizeBy: sum
+		sourceColumn: cannibal_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'promo_spend'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: 641c816d-c93f-589e-95f0-5022d01a557f
+		summarizeBy: sum
+		sourceColumn: promo_spend
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'incr_gp'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: df7e20b6-b183-5366-90b9-07469b45ab97
+		summarizeBy: sum
+		sourceColumn: incr_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'shelf_value'
+		dataType: double
+		lineageTag: df8a049b-89a0-503b-8764-105d21dfe752
+		summarizeBy: sum
+		sourceColumn: shelf_value
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'excess_depth'
+		dataType: double
+		lineageTag: 28571cd3-98c4-5527-bebc-6ee6535e3832
+		summarizeBy: sum
+		sourceColumn: excess_depth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'subsidised_share'
+		dataType: double
+		lineageTag: 0c9bb077-43ac-57d6-91ee-5df6f4a646a3
+		summarizeBy: sum
+		sourceColumn: subsidised_share
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'lift_pct'
+		dataType: double
+		lineageTag: 201e38f0-92ad-5993-8bae-d93cefa9c4ca
+		summarizeBy: sum
+		sourceColumn: lift_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'roi'
+		dataType: double
+		lineageTag: 4b430906-b70d-556e-9cb2-3fb49803f2f7
+		summarizeBy: sum
+		sourceColumn: roi
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'breakeven_supplier_share'
+		dataType: double
+		formatString: 0%
+		lineageTag: e1faf12a-4107-5614-965c-a565c650f21f
+		summarizeBy: sum
+		sourceColumn: breakeven_supplier_share
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'traffic_penetration'
+		dataType: double
+		formatString: 0%
+		lineageTag: 4eb92803-4b70-5657-8edb-35c01d8502d9
+		summarizeBy: sum
+		sourceColumn: traffic_penetration
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'roi_lo'
+		dataType: double
+		lineageTag: f829d53e-e01b-5b42-98ef-ad01c5e6621d
+		summarizeBy: sum
+		sourceColumn: roi_lo
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'roi_hi'
+		dataType: double
+		lineageTag: de6c0679-6a37-514e-b211-17641ebf795b
+		summarizeBy: sum
+		sourceColumn: roi_hi
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'incr_gp_cut5'
+		dataType: double
+		lineageTag: 6ac8288f-5366-5773-bd7b-501d508bc6ec
+		summarizeBy: sum
+		sourceColumn: incr_gp_cut5
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'promo_spend_cut5'
+		dataType: double
+		lineageTag: 44aa4bf8-c166-5967-aa64-9f1c935ecc81
+		summarizeBy: sum
+		sourceColumn: promo_spend_cut5
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'roi_cut5'
+		dataType: double
+		lineageTag: ec625e88-4694-5e9c-8023-119a9b63a795
+		summarizeBy: sum
+		sourceColumn: roi_cut5
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'verdict'
+		dataType: string
+		lineageTag: 6d5a541c-cab3-5a79-82e1-09576b798670
+		summarizeBy: none
+		sourceColumn: verdict
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'action'
+		dataType: string
+		lineageTag: b368bb92-8c51-5676-84c5-784b62236571
+		summarizeBy: none
+		sourceColumn: action
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'spend_optimised'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: 02e9f9bf-518c-5ba3-93c0-ad5f474ab595
+		summarizeBy: sum
+		sourceColumn: spend_optimised
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'spend_change'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: 081bca34-307f-58ae-b371-28494d4f16dc
+		summarizeBy: sum
+		sourceColumn: spend_change
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'K'
+		dataType: double
+		lineageTag: fd4368bb-1b5a-50f4-80f1-374eacdd1c74
+		summarizeBy: sum
+		sourceColumn: K
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'margin_on_incremental'
+		dataType: double
+		lineageTag: 93bd6dfd-2af1-5ebe-98c5-14917efb4095
+		summarizeBy: sum
+		sourceColumn: margin_on_incremental
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'disc_on_baseline'
+		dataType: double
+		lineageTag: 0dbe8a7d-e2eb-5af3-8280-a906319926f8
+		summarizeBy: sum
+		sourceColumn: disc_on_baseline
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'disc_on_incremental'
+		dataType: double
+		lineageTag: 83a298e9-d381-5029-8ca2-20ab1db4671d
+		summarizeBy: sum
+		sourceColumn: disc_on_incremental
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dip_gp'
+		dataType: double
+		lineageTag: 28d21a81-f663-5795-aca8-b5987e9db4b3
+		summarizeBy: sum
+		sourceColumn: dip_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cannibal_gp'
+		dataType: double
+		lineageTag: f9775cd1-1d91-5481-b766-5baa8c81789a
+		summarizeBy: sum
+		sourceColumn: cannibal_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cell_key'
+		dataType: string
+		lineageTag: b18d9c24-7458-590c-9422-aec551c83328
+		summarizeBy: none
+		sourceColumn: cell_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'action_short'
+		dataType: string
+		lineageTag: 2dd0f100-37d1-5028-8781-caf9af4a81cf
+		summarizeBy: none
+		sourceColumn: action_short
+
+		annotation SummarizationSetBy = Automatic
+
+	partition promo_cells_decisions = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "promo_cells_decisions.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"group", type text}, {"promo_type", type text}, {"events", Int64.Type}, {"units", type number}, {"cf_units", type number}, {"incr_units", type number}, {"dip_units", type number}, {"cannibal_units", type number}, {"promo_spend", type number}, {"incr_gp", type number}, {"shelf_value", type number}, {"excess_depth", type number}, {"subsidised_share", type number}, {"lift_pct", type number}, {"roi", type number}, {"breakeven_supplier_share", type number}, {"traffic_penetration", type number}, {"roi_lo", type number}, {"roi_hi", type number}, {"incr_gp_cut5", type number}, {"promo_spend_cut5", type number}, {"roi_cut5", type number}, {"verdict", type text}, {"action", type text}, {"spend_optimised", type number}, {"spend_change", type number}, {"K", type number}, {"margin_on_incremental", type number}, {"disc_on_baseline", type number}, {"disc_on_incremental", type number}, {"dip_gp", type number}, {"cannibal_gp", type number}, {"cell_key", type text}, {"action_short", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

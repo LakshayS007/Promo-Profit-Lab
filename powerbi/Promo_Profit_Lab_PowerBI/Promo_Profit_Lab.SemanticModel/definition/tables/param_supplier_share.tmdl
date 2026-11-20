@@ -1,0 +1,23 @@
+table param_supplier_share
+	lineageTag: 1cf7e0b3-4187-5d3c-aaea-8525dbf4fdfa
+
+	column 'supplier_share_pct'
+		dataType: int64
+		formatString: 0
+		lineageTag: 13e824cd-a6fe-55ee-8219-34e58eb1cd2e
+		summarizeBy: none
+		sourceColumn: supplier_share_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	partition param_supplier_share = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "param_supplier_share.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"supplier_share_pct", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

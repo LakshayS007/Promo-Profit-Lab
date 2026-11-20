@@ -1,0 +1,57 @@
+// Promo Profit Lab: DAX measures (the same measures are already inside powerbi/Promo_Profit_Lab_PowerBI)
+// Building by hand? Create a table called _Measures (Home > Enter data > Load), then add each measure below in order.
+
+
+// ---- Core
+Promo Spend = SUM ( fact_promo_event[promo_spend] )
+Incremental GP = SUM ( fact_promo_event[incr_gp] )
+Return per $1 = DIVIDE ( [Incremental GP], [Promo Spend] )
+Units Sold = SUM ( fact_promo_event[units] )
+Baseline Units = SUM ( fact_promo_event[cf_units] )
+Subsidised Share = DIVIDE ( [Baseline Units], [Units Sold] )
+Lift % = DIVIDE ( [Units Sold] - [Baseline Units], [Baseline Units] )
+Break-even Supplier Share = MAX ( 0, - [Return per $1] )
+
+// ---- Scenario
+Supplier Share = DIVIDE ( SELECTEDVALUE ( param_supplier_share[supplier_share_pct], 0 ), 100 )
+Margin Shift = DIVIDE ( SELECTEDVALUE ( param_margin_shift[margin_shift_pts], 0 ), 100 )
+Scenario Incremental GP = [Incremental GP] + [Margin Shift] * SUM ( fact_promo_event[K] ) + [Supplier Share] * [Promo Spend]
+Scenario Return per $1 = DIVIDE ( [Scenario Incremental GP], [Promo Spend] )
+Pays Back? = IF ( [Scenario Incremental GP] >= 0, "Yes", "No" )
+Lines Paying Back = COUNTROWS ( FILTER ( DISTINCT ( promo_cells_decisions[cell_key] ), [Scenario Incremental GP] >= 0 ) )
+Scenario GP per $1M = DIVIDE ( [Scenario Incremental GP], [Promo Spend] ) * 1000000
+
+// ---- Campaigns
+Naive Gap = AVERAGE ( campaign_results[naive_gap] )
+Matched Same-Window = AVERAGE ( campaign_results[same_window_did] )
+Matched Holdout (correct) = AVERAGE ( campaign_results[did_per_hh_week] )
+Smallest Detectable Effect = AVERAGE ( campaign_results[mde_80] )
+GP per Contact (upper bound) = AVERAGE ( campaign_results[gp_per_contact_hi] )
+
+// ---- Depth
+Best Extra Discount = AVERAGE ( optimal_depth[optimal_extra_discount] )
+Extra Discount Today = AVERAGE ( optimal_depth[current_extra_discount] )
+Extra Discount Gap = [Extra Discount Today] - [Best Extra Discount]
+
+// ---- Per $1M
+Incremental GP per $1M = DIVIDE ( [Incremental GP], [Promo Spend] ) * 1000000
+
+// ---- Trend
+Return per $1 (4-wk avg) = VAR w = MAX ( dim_week[week] ) VAR win = FILTER ( ALL ( dim_week ), dim_week[week] > w - 4 && dim_week[week] <= w ) RETURN IF ( w >= 4, DIVIDE ( CALCULATE ( [Incremental GP], win ), CALCULATE ( [Promo Spend], win ) ) )
+Promo Spend (4-wk avg) = VAR w = MAX ( dim_week[week] ) VAR win = FILTER ( ALL ( dim_week ), dim_week[week] > w - 4 && dim_week[week] <= w ) RETURN DIVIDE ( CALCULATE ( [Promo Spend], win ), 4 )
+Break-even Line = 0
+
+// ---- Core
+Promoted Weeks = COUNTROWS ( fact_promo_event )
+Avg Extra Discount = DIVIDE ( SUMX ( fact_promo_event, fact_promo_event[excess_depth] * fact_promo_event[shelf_value] ), SUM ( fact_promo_event[shelf_value] ) )
+
+// ---- Formatting
+Profit Colour = IF ( [Return per $1] < 0, "#D6336C", "#1E8E5A" )
+Verdict Colour = SWITCH ( SELECTEDVALUE ( promo_cells_decisions[verdict] ), "Keep", "#27AE60", "Fix", "#EB5A9B", "#9CA3AF" )
+
+// ---- Scenario
+Loss Rank = IF ( HASONEVALUE ( promo_cells_decisions[cell_key] ), RANKX ( FILTER ( ALLSELECTED ( promo_cells_decisions ), NOT ISBLANK ( promo_cells_decisions[cell_key] ) ), [Scenario Incremental GP], , ASC, DENSE ) )
+
+// ---- Campaigns
+Pre-campaign Spend (targeted) = AVERAGE ( campaign_results[pre_spend_treated] )
+Pre-campaign Spend (everyone else) = AVERAGE ( campaign_results[pre_spend_all_controls] )

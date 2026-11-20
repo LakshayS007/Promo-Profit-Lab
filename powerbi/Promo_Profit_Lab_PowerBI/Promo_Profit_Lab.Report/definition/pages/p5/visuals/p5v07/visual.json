@@ -1,0 +1,139 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "p5v07",
+  "position": {
+    "x": 780,
+    "y": 418,
+    "z": 7000,
+    "height": 290,
+    "width": 488,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pilot_design"
+                    }
+                  },
+                  "Property": "detectable_lift"
+                }
+              },
+              "queryRef": "pilot_design.detectable_lift",
+              "nativeQueryRef": "detectable_lift",
+              "displayName": "Lift to detect"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pilot_design"
+                    }
+                  },
+                  "Property": "households_per_arm"
+                }
+              },
+              "queryRef": "pilot_design.households_per_arm",
+              "nativeQueryRef": "households_per_arm",
+              "displayName": "Households per group"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pilot_design"
+                    }
+                  },
+                  "Property": "households_per_arm_cuped"
+                }
+              },
+              "queryRef": "pilot_design.households_per_arm_cuped",
+              "nativeQueryRef": "households_per_arm_cuped",
+              "displayName": "With CUPED baseline"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "grid": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Campaign holdout size needed'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Campaign holdout size needed'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "p4v04",
+  "position": {
+    "x": 12,
+    "y": 418,
+    "z": 4000,
+    "height": 214,
+    "width": 1256,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "campaign_results"
+                    }
+                  },
+                  "Property": "campaign_type"
+                }
+              },
+              "queryRef": "campaign_results.campaign_type",
+              "nativeQueryRef": "campaign_type",
+              "displayName": "Campaign type"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "campaign_results"
+                        }
+                      },
+                      "Property": "households_exposures"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(campaign_results.households_exposures)",
+              "nativeQueryRef": "households_exposures",
+              "displayName": "Households contacted"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Matched Holdout (correct)"
+                }
+              },
+              "queryRef": "_Measures.Matched Holdout (correct)",
+              "nativeQueryRef": "Matched Holdout (correct)",
+              "displayName": "Measured effect / week"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "campaign_results"
+                        }
+                      },
+                      "Property": "lo"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(campaign_results.lo)",
+              "nativeQueryRef": "lo",
+              "displayName": "95% low"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "campaign_results"
+                        }
+                      },
+                      "Property": "hi"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(campaign_results.hi)",
+              "nativeQueryRef": "hi",
+              "displayName": "95% high"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Smallest Detectable Effect"
+                }
+              },
+              "queryRef": "_Measures.Smallest Detectable Effect",
+              "nativeQueryRef": "Smallest Detectable Effect",
+              "displayName": "Smallest detectable"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "GP per Contact (upper bound)"
+                }
+              },
+              "queryRef": "_Measures.GP per Contact (upper bound)",
+              "nativeQueryRef": "GP per Contact (upper bound)",
+              "displayName": "Max profit per contact"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "grid": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "7D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Campaign evidence'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Campaign evidence'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

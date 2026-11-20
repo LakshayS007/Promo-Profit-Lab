@@ -1,0 +1,185 @@
+table _Measures
+	lineageTag: bbf89f5b-efc0-5f00-aac9-a7bba9a5a8f4
+
+	measure 'Promo Spend' = SUM ( fact_promo_event[promo_spend] )
+		formatString: "$"#,0
+		displayFolder: Core
+		lineageTag: 2b64cba5-807f-5039-a82f-f9c8bb295ba1
+
+	measure 'Incremental GP' = SUM ( fact_promo_event[incr_gp] )
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: Core
+		lineageTag: 05bde591-b771-5db9-a959-5fc1211cad28
+
+	measure 'Return per $1' = DIVIDE ( [Incremental GP], [Promo Spend] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Core
+		lineageTag: e108aedf-90d3-5cc4-8625-7e71af7540ad
+
+	measure 'Units Sold' = SUM ( fact_promo_event[units] )
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: 4f547ec2-c861-529d-9f2e-4e8028d20680
+
+	measure 'Baseline Units' = SUM ( fact_promo_event[cf_units] )
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: bb210cf1-f34f-55ac-9ee5-0cc10a925569
+
+	measure 'Subsidised Share' = DIVIDE ( [Baseline Units], [Units Sold] )
+		formatString: 0%
+		displayFolder: Core
+		lineageTag: c4b077a8-566a-5cfc-99a2-6faf665de3da
+
+	measure 'Lift %' = DIVIDE ( [Units Sold] - [Baseline Units], [Baseline Units] )
+		formatString: 0%
+		displayFolder: Core
+		lineageTag: ec14f46f-743c-5359-b530-a3d3f5afa2da
+
+	measure 'Break-even Supplier Share' = MAX ( 0, - [Return per $1] )
+		formatString: 0%
+		displayFolder: Core
+		lineageTag: 51cc048e-7945-51ba-93f0-59998b09e885
+
+	measure 'Supplier Share' = DIVIDE ( SELECTEDVALUE ( param_supplier_share[supplier_share_pct], 0 ), 100 )
+		formatString: 0%
+		displayFolder: Scenario
+		lineageTag: d0318cef-24dc-5b4b-afb5-00f391a30c81
+
+	measure 'Margin Shift' = DIVIDE ( SELECTEDVALUE ( param_margin_shift[margin_shift_pts], 0 ), 100 )
+		formatString: 0%
+		displayFolder: Scenario
+		lineageTag: 3ffa04d8-0f48-5932-b7bf-29862065321f
+
+	measure 'Scenario Incremental GP' = [Incremental GP] + [Margin Shift] * SUM ( fact_promo_event[K] ) + [Supplier Share] * [Promo Spend]
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: Scenario
+		lineageTag: 6dcba3e4-7176-53ed-9944-891dfcf06ccd
+
+	measure 'Scenario Return per $1' = DIVIDE ( [Scenario Incremental GP], [Promo Spend] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Scenario
+		lineageTag: 61aff07a-6be6-5a2d-ae9f-fb7d58c30150
+
+	measure 'Pays Back?' = IF ( [Scenario Incremental GP] >= 0, "Yes", "No" )
+		displayFolder: Scenario
+		lineageTag: e3c856e9-7737-5e20-bbb8-a0585ddb8a34
+
+	measure 'Lines Paying Back' = COUNTROWS ( FILTER ( DISTINCT ( promo_cells_decisions[cell_key] ), [Scenario Incremental GP] >= 0 ) )
+		formatString: 0
+		displayFolder: Scenario
+		lineageTag: 0824c249-155c-51f6-8b51-50d4d8f094a5
+
+	measure 'Scenario GP per $1M' = DIVIDE ( [Scenario Incremental GP], [Promo Spend] ) * 1000000
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: Scenario
+		lineageTag: 09383d44-e2d9-53ab-a34c-9ded15edb8ad
+
+	measure 'Naive Gap' = AVERAGE ( campaign_results[naive_gap] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: e2874a3c-a8ce-5332-a712-bb980e3b6f06
+
+	measure 'Matched Same-Window' = AVERAGE ( campaign_results[same_window_did] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: c65b3fa4-cef0-56cb-9131-a9770d7432b0
+
+	measure 'Matched Holdout (correct)' = AVERAGE ( campaign_results[did_per_hh_week] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: 25c3694e-c7ca-53ec-93a3-5f18b823992f
+
+	measure 'Smallest Detectable Effect' = AVERAGE ( campaign_results[mde_80] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: 2ad2d8f8-d118-5ac6-b780-8486f6a286c1
+
+	measure 'GP per Contact (upper bound)' = AVERAGE ( campaign_results[gp_per_contact_hi] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: 45d3e207-3f02-588b-8f88-31afa5475051
+
+	measure 'Best Extra Discount' = AVERAGE ( optimal_depth[optimal_extra_discount] )
+		formatString: 0%
+		displayFolder: Depth
+		lineageTag: e9c7fcc0-bb76-53c9-8e54-e076d0f9fc3c
+
+	measure 'Extra Discount Today' = AVERAGE ( optimal_depth[current_extra_discount] )
+		formatString: 0%
+		displayFolder: Depth
+		lineageTag: bd22282a-4d70-59cf-b0ff-3122c782b465
+
+	measure 'Extra Discount Gap' = [Extra Discount Today] - [Best Extra Discount]
+		formatString: 0%
+		displayFolder: Depth
+		lineageTag: 69d5f71b-32df-5331-874a-deb6d871f0ce
+
+	measure 'Incremental GP per $1M' = DIVIDE ( [Incremental GP], [Promo Spend] ) * 1000000
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: Per $1M
+		lineageTag: fab79ad0-1138-5b87-9681-f2721c248e53
+
+	measure 'Return per $1 (4-wk avg)' = VAR w = MAX ( dim_week[week] ) VAR win = FILTER ( ALL ( dim_week ), dim_week[week] > w - 4 && dim_week[week] <= w ) RETURN IF ( w >= 4, DIVIDE ( CALCULATE ( [Incremental GP], win ), CALCULATE ( [Promo Spend], win ) ) )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Trend
+		lineageTag: 6304f25a-0fad-5a75-8c3e-c03129b9ca1a
+
+	measure 'Promo Spend (4-wk avg)' = VAR w = MAX ( dim_week[week] ) VAR win = FILTER ( ALL ( dim_week ), dim_week[week] > w - 4 && dim_week[week] <= w ) RETURN DIVIDE ( CALCULATE ( [Promo Spend], win ), 4 )
+		formatString: "$"#,0
+		displayFolder: Trend
+		lineageTag: 93eee3a0-0a86-5cc3-92fb-9d40d6b04fa4
+
+	measure 'Break-even Line' = 0
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: Trend
+		lineageTag: be796a61-3b8b-5daf-a5f7-bfdfa0f2dc9d
+
+	measure 'Promoted Weeks' = COUNTROWS ( fact_promo_event )
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: 4af482a5-e670-58cd-bbe2-0b0e981cfd46
+
+	measure 'Avg Extra Discount' = DIVIDE ( SUMX ( fact_promo_event, fact_promo_event[excess_depth] * fact_promo_event[shelf_value] ), SUM ( fact_promo_event[shelf_value] ) )
+		formatString: 0%
+		displayFolder: Core
+		lineageTag: db047730-d2a1-5f42-b433-5b5b0828719a
+
+	measure 'Profit Colour' = IF ( [Return per $1] < 0, "#D6336C", "#1E8E5A" )
+		displayFolder: Formatting
+		lineageTag: 386add80-b964-536f-9105-1616782acb6f
+
+	measure 'Verdict Colour' = SWITCH ( SELECTEDVALUE ( promo_cells_decisions[verdict] ), "Keep", "#27AE60", "Fix", "#EB5A9B", "#9CA3AF" )
+		displayFolder: Formatting
+		lineageTag: 2845055c-40c5-5729-9b88-8c5cd8b53da2
+
+	measure 'Loss Rank' = IF ( HASONEVALUE ( promo_cells_decisions[cell_key] ), RANKX ( FILTER ( ALLSELECTED ( promo_cells_decisions ), NOT ISBLANK ( promo_cells_decisions[cell_key] ) ), [Scenario Incremental GP], , ASC, DENSE ) )
+		formatString: 0
+		displayFolder: Scenario
+		lineageTag: fa173ddc-94d1-514d-a407-a350170cfb16
+
+	measure 'Pre-campaign Spend (targeted)' = AVERAGE ( campaign_results[pre_spend_treated] )
+		formatString: "$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: b172b35c-16c9-54fe-bd61-99b811bf09b8
+
+	measure 'Pre-campaign Spend (everyone else)' = AVERAGE ( campaign_results[pre_spend_all_controls] )
+		formatString: "$"#,0.00
+		displayFolder: Campaigns
+		lineageTag: ac4d5f64-d50c-5beb-ba54-9be40d87ae82
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 432accb7-4965-5478-ae7e-e988e1d06c25
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Column1]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "Column1", "" )
+
+	annotation PBI_Id = 66001b8e9cea528bbc5b14296b7929f1

@@ -1,0 +1,234 @@
+table fact_promo_event
+	lineageTag: 72acf707-911a-5daa-a6a7-50fdaa19bf71
+
+	column 'cell_key'
+		dataType: string
+		lineageTag: 28195652-8955-52d9-9bc9-487034e1a1c1
+		summarizeBy: none
+		sourceColumn: cell_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'product_id'
+		dataType: int64
+		formatString: 0
+		lineageTag: e49ea0bf-df07-5d01-b134-12fd4c128726
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'week'
+		dataType: int64
+		formatString: 0
+		lineageTag: cd8dfe56-b333-5809-83d8-3aff98b20950
+		summarizeBy: none
+		sourceColumn: week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'department'
+		dataType: string
+		lineageTag: ab8d65d9-db32-5896-b4d7-0c23b26f0f3d
+		summarizeBy: none
+		sourceColumn: department
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'group'
+		dataType: string
+		lineageTag: 9edb90ce-a3c8-5306-b4c0-29006000d42a
+		summarizeBy: none
+		sourceColumn: group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'product_type'
+		dataType: string
+		lineageTag: 70d7d19d-9b24-57f4-94ce-93568345e3b9
+		summarizeBy: none
+		sourceColumn: product_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'promo_type'
+		dataType: string
+		lineageTag: 18c0af71-744b-57af-bd49-daa6049faa75
+		summarizeBy: none
+		sourceColumn: promo_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'discount_depth'
+		dataType: double
+		lineageTag: a0006eca-ec0c-50e8-9dcf-e6e68971a610
+		summarizeBy: sum
+		sourceColumn: discount_depth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'usual_depth'
+		dataType: double
+		lineageTag: 11d2c68c-9508-5b0f-9ceb-ef0f796c1434
+		summarizeBy: sum
+		sourceColumn: usual_depth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'excess_depth'
+		dataType: double
+		lineageTag: c791ce4e-8904-5abe-bd88-b1bb23c9a876
+		summarizeBy: sum
+		sourceColumn: excess_depth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'units'
+		dataType: double
+		lineageTag: 1ea6db4b-2721-5708-b3ba-74b12aea854e
+		summarizeBy: sum
+		sourceColumn: units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cf_units'
+		dataType: double
+		lineageTag: 017a43ba-6d57-52b8-8eb6-34b74644c3be
+		summarizeBy: sum
+		sourceColumn: cf_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'incr_units'
+		dataType: double
+		lineageTag: 7380e194-afb4-5ba3-8af2-4b73356ea2e9
+		summarizeBy: sum
+		sourceColumn: incr_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dip_units'
+		dataType: double
+		lineageTag: 2911c221-b7fd-53a2-ba02-7e6377ee615b
+		summarizeBy: sum
+		sourceColumn: dip_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cannibal_units'
+		dataType: double
+		lineageTag: e99926ec-5b1c-5ce1-aac4-c2bf524d22fa
+		summarizeBy: sum
+		sourceColumn: cannibal_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'shelf_value'
+		dataType: double
+		lineageTag: 77672a4a-3e73-5716-b39d-d79c1570ca78
+		summarizeBy: sum
+		sourceColumn: shelf_value
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'promo_spend'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: 54671866-a192-5549-aa1e-757b08d1f664
+		summarizeBy: sum
+		sourceColumn: promo_spend
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'margin_on_incremental'
+		dataType: double
+		lineageTag: 843f90c7-3121-5d31-a1a9-d51d76fbd259
+		summarizeBy: sum
+		sourceColumn: margin_on_incremental
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'disc_on_baseline'
+		dataType: double
+		lineageTag: 3abb3ef3-668e-5925-82e9-d7cc1500112d
+		summarizeBy: sum
+		sourceColumn: disc_on_baseline
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'disc_on_incremental'
+		dataType: double
+		lineageTag: a9ad4eec-36f4-5513-8d1e-005c2cdccc2c
+		summarizeBy: sum
+		sourceColumn: disc_on_incremental
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dip_gp'
+		dataType: double
+		lineageTag: 64db6bfc-35ac-5a2c-b5d0-ce520fd96561
+		summarizeBy: sum
+		sourceColumn: dip_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cannibal_gp'
+		dataType: double
+		lineageTag: 756a4192-75c3-5598-bbf7-0cbc279840f7
+		summarizeBy: sum
+		sourceColumn: cannibal_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'incr_gp'
+		dataType: double
+		formatString: "$"#,0
+		lineageTag: 552aa8da-ecd6-5988-ba2b-e64584622691
+		summarizeBy: sum
+		sourceColumn: incr_gp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'regular_price'
+		dataType: double
+		lineageTag: ef2b95fa-1e7e-5e73-b8fb-61e57bfb5801
+		summarizeBy: sum
+		sourceColumn: regular_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'everyday_price'
+		dataType: double
+		lineageTag: 5f3547a6-7b05-5687-9cea-fb5a870d36b3
+		summarizeBy: sum
+		sourceColumn: everyday_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'gross_margin'
+		dataType: double
+		lineageTag: b89fc904-4000-5377-a48d-0061ddc90ff8
+		summarizeBy: sum
+		sourceColumn: gross_margin
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'K'
+		dataType: double
+		lineageTag: 6c1c28ca-91be-52ef-8fd9-36f6744624f3
+		summarizeBy: sum
+		sourceColumn: K
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_promo_event = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_promo_event.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"cell_key", type text}, {"product_id", Int64.Type}, {"week", Int64.Type}, {"department", type text}, {"group", type text}, {"product_type", type text}, {"promo_type", type text}, {"discount_depth", type number}, {"usual_depth", type number}, {"excess_depth", type number}, {"units", type number}, {"cf_units", type number}, {"incr_units", type number}, {"dip_units", type number}, {"cannibal_units", type number}, {"shelf_value", type number}, {"promo_spend", type number}, {"margin_on_incremental", type number}, {"disc_on_baseline", type number}, {"disc_on_incremental", type number}, {"dip_gp", type number}, {"cannibal_gp", type number}, {"incr_gp", type number}, {"regular_price", type number}, {"everyday_price", type number}, {"gross_margin", type number}, {"K", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
