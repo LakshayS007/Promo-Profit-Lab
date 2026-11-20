@@ -1,0 +1,9 @@
+version: 2
+seeds:
+  - name: margin_assumptions
+    description: Assumed gross margin on regular shelf price by department. The dataset has no cost data, so every profit figure is tested against +/-10 points in the analysis.
+    columns:
+      - name: department
+        tests: [unique, not_null]
+      - name: gross_margin
+        tests: [not_null]

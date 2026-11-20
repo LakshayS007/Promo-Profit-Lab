@@ -1,0 +1,34 @@
+{
+ "products": 2186,
+ "product_weeks": 115858,
+ "promo_weeks": 23555,
+ "shelf_value": 1937090.4700000002,
+ "promo_spend": 166370.734964,
+ "all_card_discount_core": 354382.97000000335,
+ "everyday_share_of_discount": 0.510571255596739,
+ "incr_gp": -54407.055375793236,
+ "roi": -0.3270229910781247,
+ "roi_lo": -0.3509253016545909,
+ "roi_hi": -0.30988368217831874,
+ "subsidised_share": 0.45404136315055943,
+ "lift_pct": 1.2024425110987114,
+ "dip": {
+  "lag1": 0.043911162544080035,
+  "lag2": 0.027108655749916836
+ },
+ "rival": -0.06509653629437234,
+ "r2_within": 0.170570740531506,
+ "validation": {
+  "held_out_events": 4709,
+  "smearing_factor": 1.153607687905844,
+  "model_wape": 0.43725398837314794,
+  "model_bias": -0.017866704491323104,
+  "model_wape_no_smearing": 0.4267249351531039,
+  "model_bias_no_smearing": -0.1575914969568074,
+  "lift_rank_corr": 0.5565718979344539,
+  "naive_no_lift_wape": 0.6155003353813011,
+  "naive_no_lift_bias": -0.5404787377610377,
+  "naive_avg_promo_wape": 0.4283842638850992,
+  "naive_avg_promo_bias": -0.005984836286688777
+ }
+}

@@ -1,0 +1,58 @@
+group,promo_type,roi,margin_shift
+Deli & bakery,In-store display,inf,-0.1
+Deli & bakery,Mailer feature,0.30748069555324714,-0.1
+Deli & bakery,Price cut only,-0.2167058037872788,-0.1
+Fresh meat,Mailer feature,-0.49390654620899016,-0.1
+Fresh meat,Price cut only,-0.6745892456933624,-0.1
+Grocery,In-store display,-0.3215340770836028,-0.1
+Grocery,Mailer + display,-0.6179370294166101,-0.1
+Grocery,Mailer feature,-0.6664482800718079,-0.1
+Grocery,Price cut only,-0.752003141967958,-0.1
+"Health, beauty & GM",In-store display,-0.3929132278829106,-0.1
+"Health, beauty & GM",Mailer + display,-0.3629145192710579,-0.1
+"Health, beauty & GM",Mailer feature,-0.534891409137555,-0.1
+"Health, beauty & GM",Price cut only,-0.6548378746999874,-0.1
+Packaged meat & seafood,In-store display,-0.04696639342076369,-0.1
+Packaged meat & seafood,Mailer + display,-0.47819400100844756,-0.1
+Packaged meat & seafood,Mailer feature,-0.5110104983521325,-0.1
+Packaged meat & seafood,Price cut only,-0.6417122924395275,-0.1
+Produce,Mailer feature,-0.45743546679132707,-0.1
+Produce,Price cut only,-0.5495960626806856,-0.1
+Deli & bakery,In-store display,inf,0.0
+Deli & bakery,Mailer feature,0.710171909659399,0.0
+Deli & bakery,Price cut only,0.02690038227811624,0.0
+Fresh meat,Mailer feature,-0.21274351632509583,0.0
+Fresh meat,Price cut only,-0.49380549330078594,0.0
+Grocery,In-store display,0.13077653819399532,0.0
+Grocery,Mailer + display,-0.36322838236101684,0.0
+Grocery,Mailer feature,-0.44408046678634644,0.0
+Grocery,Price cut only,-0.5866719032799299,0.0
+"Health, beauty & GM",In-store display,-0.08936984182436586,0.0
+"Health, beauty & GM",Mailer + display,-0.04437177890658676,0.0
+"Health, beauty & GM",Mailer feature,-0.3023371137063324,0.0
+"Health, beauty & GM",Price cut only,-0.4822568120499811,0.0
+Packaged meat & seafood,In-store display,0.48249672134547855,0.0
+Packaged meat & seafood,Mailer + display,-0.188301779346474,0.0
+Packaged meat & seafood,Mailer feature,-0.2393496641033173,0.0
+Packaged meat & seafood,Price cut only,-0.44266356601704293,0.0
+Produce,Mailer feature,-0.2765806223884361,0.0
+Produce,Price cut only,-0.3994614169075811,0.0
+Deli & bakery,In-store display,inf,0.1
+Deli & bakery,Mailer feature,1.112863123765551,0.1
+Deli & bakery,Price cut only,0.27050656834351133,0.1
+Fresh meat,Mailer feature,0.06841951355879843,0.1
+Fresh meat,Price cut only,-0.31302174090820956,0.1
+Grocery,In-store display,0.5830871534715933,0.1
+Grocery,Mailer + display,-0.1085197353054236,0.1
+Grocery,Mailer feature,-0.22171265350088504,0.1
+Grocery,Price cut only,-0.42134066459190184,0.1
+"Health, beauty & GM",In-store display,0.21417354423417895,0.1
+"Health, beauty & GM",Mailer + display,0.2741709614578845,0.1
+"Health, beauty & GM",Mailer feature,-0.0697828182751098,0.1
+"Health, beauty & GM",Price cut only,-0.30967574939997483,0.1
+Packaged meat & seafood,In-store display,1.0119598361117206,0.1
+Packaged meat & seafood,Mailer + display,0.10159044231549952,0.1
+Packaged meat & seafood,Mailer feature,0.03231117014549793,0.1
+Packaged meat & seafood,Price cut only,-0.24361483959455843,0.1
+Produce,Mailer feature,-0.09572577798554523,0.1
+Produce,Price cut only,-0.24932677113447635,0.1

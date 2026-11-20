@@ -1,0 +1,22 @@
+flowchart LR
+  subgraph CM[Category manager]
+    B1[Draft promo calendar] --> B2[Score each promotion<br/>in Promo Profit Lab]
+    B3{Return per $1 at<br/>committed funding >= 0?}
+    B3 -- No --> B4[Redesign: shallower extra discount<br/>or mailer/display instead of price cut]
+    B4 --> B2
+  end
+  subgraph SUP[Supplier]
+    S2[Negotiate funding against<br/>each promotion's break-even share]
+  end
+  subgraph MKT[Marketing]
+    M3[Run campaign with a<br/>random 10-20% holdout]
+  end
+  subgraph FIN[Finance]
+    F2[Approve calendar if total<br/>incremental profit >= 0]
+    F3[Post-event review: actual vs<br/>predicted lift, profit per $1]
+  end
+  B2 --> S2 --> B3
+  B3 -- Yes --> F2 --> M3 --> F3
+  F3 -- "update model and rules" --> B2
+  classDef gate fill:#fff3c4,stroke:#e8b800,color:#16191d
+  class B3,F2 gate

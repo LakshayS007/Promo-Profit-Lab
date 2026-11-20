@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Promo Profit Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one reading column; a row of shelf-edge "price tags" carries the headline numbers, then evidence sections, then the plan */
+:root{
+  --bg:#f4f5f2; --surface:#ffffff; --ink:#16191d; --ink-2:#4b525a; --muted:#79808a; --line:#dfe2df; --line-2:#c9cdc9;
+  --tag:#ffd43b; --tag-ink:#16191d; --tag-edge:#e8b800;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --neg:#d03b3b; --pos:#0ca30c;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --f-head:"Archivo","Arial Narrow",system-ui,sans-serif; --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111315; --surface:#191c1f; --ink:#eceef0; --ink-2:#b8bec5; --muted:#8a919a; --line:#2a2f34; --line-2:#3a4047;
+  --tag:#ffd43b; --tag-ink:#16191d; --tag-edge:#c99f00; --s1:#3987e5; --s2:#d95926; --s3:#199e70; --neg:#e66767; --pos:#3fbf3f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111315; --surface:#191c1f; --ink:#eceef0; --ink-2:#b8bec5; --muted:#8a919a; --line:#2a2f34; --line-2:#3a4047;
+  --tag:#ffd43b; --tag-ink:#16191d; --tag-edge:#c99f00; --s1:#3987e5; --s2:#d95926; --s3:#199e70; --neg:#e66767; --pos:#3fbf3f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.mast{padding-block:40px 8px}
+.kicker{font:700 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-head);font-stretch:80%;font-weight:900;font-size:clamp(40px,7vw,72px);line-height:.92;letter-spacing:-.01em;margin:10px 0 0;text-wrap:balance}
+.q{font-size:clamp(17px,2.2vw,21px);color:var(--ink-2);max-width:62ch;margin:14px 0 0}
+.meta{font-size:13px;color:var(--muted);margin-top:10px}
+/* price-tag headline figures */
+.tags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:28px 0 6px}
+@media (max-width:860px){.tags{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.tags{grid-template-columns:minmax(0,1fr)}}
+.tag{position:relative;background:var(--tag);color:var(--tag-ink);border-radius:6px;padding:16px 16px 14px 22px;box-shadow:inset 0 -4px 0 var(--tag-edge)}
+.tag::before{content:"";position:absolute;left:8px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--bg)}
+.tag b{display:block;font-family:var(--f-head);font-stretch:75%;font-weight:900;font-size:clamp(40px,5vw,54px);line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.tag span{display:block;font-size:13.5px;font-weight:600;line-height:1.35;margin-top:8px}
+.tag small{display:block;font-size:11.5px;opacity:.75;margin-top:4px}
+section{padding-block:34px 4px}
+h2{font-family:var(--f-head);font-stretch:85%;font-weight:800;font-size:clamp(24px,3vw,32px);line-height:1.05;margin:0;text-wrap:balance}
+.lede{color:var(--ink-2);max-width:68ch;margin:8px 0 16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+@media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.chart{width:100%;display:block;overflow:visible}
+.chart text{fill:var(--ink-2);font:12px var(--f-body)}
+.chart .lab{fill:var(--ink);font-weight:600}
+.chart .val{fill:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.chart .axis{stroke:var(--line-2)} .chart .grid{stroke:var(--line);stroke-dasharray:2 4}
+.chart .zero{stroke:var(--ink-2);stroke-width:1.5}
+.hit{fill:transparent;cursor:default}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2);margin:0 0 8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;line-height:1.4;padding:8px 10px;border-radius:8px;max-width:280px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.tip b{display:block}
+/* table */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+.chip{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12px;padding:2px 9px 2px 7px;border-radius:999px;white-space:nowrap;border:1.5px solid}
+.chip svg{width:10px;height:10px}
+.Keep{color:var(--ink);border-color:var(--good)} .Keep svg{fill:var(--good)}
+.Fix{color:var(--ink);border-color:var(--warn)} .Fix svg{fill:var(--warn)}
+.Kill{color:var(--ink);border-color:var(--crit)} .Kill svg{fill:var(--crit)}
+.pays{font-weight:700} .pays.y{color:var(--pos)} .pays.n{color:var(--neg)}
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:end;margin:0 0 14px}
+.ctl{display:flex;flex-direction:column;gap:6px;min-width:220px;flex:1 1 220px}
+.ctl label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ctl output{font-family:var(--f-head);font-weight:800;font-size:20px;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--s1)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 14px}
+@media (max-width:600px){.kpis{grid-template-columns:minmax(0,1fr)}}
+.kpi{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;background:var(--surface)}
+.kpi b{display:block;font-family:var(--f-head);font-stretch:80%;font-weight:900;font-size:30px;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;color:var(--ink-2)}
+/* plan */
+.plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.plan{grid-template-columns:minmax(0,1fr)}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.step .no{font-family:var(--f-head);font-weight:900;font-stretch:75%;font-size:15px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.step h3{margin:0;font-family:var(--f-head);font-stretch:85%;font-weight:800;font-size:21px;line-height:1.1}
+.step p{margin:0;color:var(--ink-2);font-size:14px}
+.step .impact{margin-top:auto;padding-top:8px;border-top:1px dashed var(--line-2);font-size:13px;color:var(--ink-2)}
+.step .impact b{color:var(--ink);font-variant-numeric:tabular-nums}
+.callout{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--tag);border-radius:var(--r);padding:14px 16px;margin:18px 0 0}
+.callout b.big{font-family:var(--f-head);font-stretch:75%;font-weight:900;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+@media (max-width:520px){.callout{grid-template-columns:minmax(0,1fr);gap:6px}}
+.callout p{margin:0;color:var(--ink-2);font-size:14px;max-width:70ch} .callout p strong{color:var(--ink)}
+.heat td.c{text-align:center;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.heat td.c span{display:inline-block;min-width:58px;padding:3px 8px;border-radius:6px}
+.muted{color:var(--muted)}
+.prose{max-width:72ch;color:var(--ink-2);font-size:14px}
+.prose p{margin:0 0 10px} .prose b{color:var(--ink)}
+footer{padding-block:30px 40px;color:var(--muted);font-size:12.5px}
+a{color:var(--s1)}
+:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.bar{transition:width .3s ease}}
+</style>
+
+<noscript><div style="margin:16px;padding:14px 18px;border-radius:8px;background:#ffd43b;color:#16191d;font:600 15px system-ui">This dashboard needs JavaScript. Download the file and open it in Chrome, Edge, Safari or Firefox.</div></noscript>
+<header class="wrap mast">
+  <div class="kicker">Grocery promotion P&amp;L · one retailer · 2,469 shopper households · 2017</div>
+  <h1>Promo Profit Lab</h1>
+  <p class="q">Which promotions actually make money, how much should suppliers fund, and where should next quarter's promotion budget go?</p>
+  <p class="meta" id="meta"></p>
+  <div class="tags" id="tags"></div>
+  <div class="callout" id="everyday"></div>
+</header>
+
+<main>
+<section class="wrap" aria-labelledby="h-water">
+  <h2 id="h-water">Where each $1 of promotion spend goes</h2>
+  <p class="lede">The extra sales nearly pay for themselves: the margin on extra units almost covers the discount on those units. The loss comes from the same discount handed to shoppers who were going to buy anyway.</p>
+  <div class="card"><svg class="chart" id="water" role="img" aria-labelledby="water-t"><title id="water-t">Waterfall of incremental gross profit per dollar of promotion spend</title></svg>
+  <p class="note">Gross profit uses assumed department margins (the data has no costs). Promotion spend is discount beyond each product's everyday card price. Supplier funding is not included here; the Keep or fix section shows how much a supplier would need to cover.</p></div>
+</section>
+
+<section class="wrap" aria-labelledby="h-types">
+  <h2 id="h-types">Promotion types compared</h2>
+  <p class="lede">In-store displays pay back on their own. Mailer-plus-display events drive the biggest lift but carry deep discounts. Price cuts with no mailer or display are the worst value, because more than half the units would have sold anyway.</p>
+  <div class="grid2">
+    <div class="card"><div class="legend" aria-hidden="true"><span><i style="background:var(--s1)"></i>Gross profit per $1 of promotion spend (90% interval)</span></div>
+      <svg class="chart" id="roi" role="img" aria-label="Incremental gross profit per dollar of promotion spend by promotion type"></svg></div>
+    <div class="card"><div class="legend" aria-hidden="true"><span><i style="background:var(--s2)"></i>Share of promoted units that would have sold anyway</span></div>
+      <svg class="chart" id="subs" role="img" aria-label="Share of promoted units that would have sold anyway by promotion type"></svg></div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-kfk">
+  <h2 id="h-kfk">Keep or fix: the supplier funding each promotion needs</h2>
+  <p class="lede">Each department and promotion type, judged on the share of its promotion spend a supplier must fund for it to break even. Keep: 25% or less. Stop: over 50% and a category few households buy; none qualifies, because every expensive line is a high-traffic category. Everything else is Fix. Move the sliders to test the assumptions.</p>
+  <div class="card">
+    <div class="controls">
+      <div class="ctl"><label for="sup">Supplier funding you can negotiate</label><output id="sup-o" for="sup">0%</output><input id="sup" type="range" min="0" max="80" step="5" value="0"></div>
+      <div class="ctl"><label for="mar">Margin assumption vs base case</label><output id="mar-o" for="mar">±0 pts</output><input id="mar" type="range" min="-10" max="10" step="1" value="0"></div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div>
+      <div><div class="legend" id="kfk-legend"></div><svg class="chart" id="kfk" role="img" aria-label="Break-even supplier funding against traffic role, one point per department and promotion type"></svg>
+        <p class="note">Points right of the dashed line need more supplier funding than the slider allows. Higher points are categories more households buy. Point size = promotion spend.</p></div>
+      <div class="tw" style="margin-top:14px"><table id="kfk-t"><thead><tr><th>Department · promotion</th><th>Verdict</th><th class="n">Break-even funding</th><th class="n">Pays at this funding?</th><th>What to do</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-depth">
+  <h2 id="h-depth">How deep should the extra discount be?</h2>
+  <p class="lede">The profit-maximising extra discount for each department, given the share a supplier funds. At 25% supplier funding or less, the best extra discount is zero in every department. Even at 50%, today's extra discounts are deeper than the best level everywhere.</p>
+  <div class="tw"><table class="heat" id="depth"><thead></thead><tbody></tbody></table></div>
+  <p class="note" id="depth-note"></p>
+</section>
+
+<section class="wrap" aria-labelledby="h-halo">
+  <h2 id="h-halo">Do promotions bring extra spend on other items?</h2>
+  <p class="lede">The usual defence of a losing promotion is that it brings shoppers in, and they fill a bigger basket. This was tested directly, and it does not hold here.</p>
+  <div class="grid2">
+    <div class="card"><div class="legend" aria-hidden="true"><span><i style="background:var(--s1)"></i>Change in weekly spend per household when 10 more points of its usual basket are on promotion (95% interval)</span></div>
+      <svg class="chart" id="halo" role="img" aria-label="Effect of promotion exposure on household spend on promoted items, other items, and a placebo"></svg></div>
+    <div class="card prose" id="halo-notes"></div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="h-camp">
+  <h2 id="h-camp">Do targeted campaigns create extra spend? Not proven.</h2>
+  <p class="lede">Campaign households spend far more than everyone else, but they already did before the campaign: the retailer targets its best shoppers. Comparing like with like, and measuring on weeks not used for matching, the extra spend shrinks to an amount this data cannot tell apart from zero.</p>
+  <div class="grid2">
+    <div class="card"><div class="legend" aria-hidden="true">
+      <span><i style="background:var(--s1)"></i>Naive: campaign vs all other households</span>
+      <span><i style="background:var(--s2)"></i>Matched, same weeks for matching and measuring</span>
+      <span><i style="background:var(--s3)"></i>Matched, separate holdout weeks (correct)</span></div>
+      <svg class="chart" id="camp" role="img" aria-label="Extra weekly spend per household attributed to campaigns under three methods"></svg></div>
+    <div class="card prose" id="camp-notes"></div>
+  </div>
+  <div class="tw" style="margin-top:14px"><table id="camp-t"><thead><tr><th>Campaign</th><th class="n">Contacts</th><th class="n">Effect per<br>household-week</th><th class="n">Smallest<br>detectable</th><th class="n">Gross profit<br>per contact</th></tr></thead><tbody></tbody></table></div>
+  <p class="note">Smallest detectable effect: 80% power, 5% significance, from the bootstrap standard error. Effect intervals are 95%. Gross profit per contact = effect × campaign weeks per contact × blended margin, before the cost of the contact itself; the second line is the top of the interval. A contact (mailer, coupon pack) that costs more than that cannot pay back.</p>
+</section>
+
+<section class="wrap" aria-labelledby="h-plan">
+  <h2 id="h-plan">The plan</h2>
+  <p class="lede">Three changes. Dollar figures are scaled to every $1M of promotion spend, so they read the same for a business of any size.</p>
+  <div class="plan" id="plan"></div>
+  <div class="tw" style="margin-top:14px"><table id="pilot"><thead><tr><th>Smallest lift the test can detect</th><th class="n">Households per group</th><th class="n">With pre-period adjustment (CUPED)</th></tr></thead><tbody></tbody></table></div>
+  <p class="note">Sample sizes for a randomised campaign holdout over 6 weeks: 80% power, 5% significance, two groups of equal size.</p>
+</section>
+
+<section class="wrap" aria-labelledby="h-method">
+  <h2 id="h-method">How this was measured</h2>
+  <div class="prose" style="margin-top:12px">
+    <p><b>Data.</b> 84.51° "The Complete Journey": every grocery purchase by 2,469 households over 2017 (1.46M basket lines), with weekly mailer and in-store display placement by product and store, 27 targeted campaigns, and coupons. Promotion economics use the 2,186 products that sold in at least 45 of 53 weeks, covering 59% of sales.</p>
+    <p><b>Promotion spend.</b> Each product's everyday card discount is its median discount depth over the year. Only discount beyond that counts as promotion spend. A week is a price-cut promotion if the extra discount is 10 points or more; mailer and display need 50% store coverage.</p>
+    <p><b>Lift.</b> A two-way fixed-effects demand model (product, and department × week) estimates the extra units from each promotion type and each point of extra discount, the change in the weeks after, and the sales taken from other items of the same type. Intervals come from 300 draws of the coefficient sampling distribution, clustered by product.</p>
+    <p><b>Model check.</b> One in five promoted weeks was held out of the fit and predicted afterwards.</p>
+    <div class="tw" style="margin:0 0 12px"><table id="val"><thead><tr><th>Baseline for held-out promoted weeks</th><th class="n">Bias in total units</th><th class="n">Error (WAPE)</th></tr></thead><tbody></tbody></table></div>
+    <p id="val-note"></p>
+    <p><b>Halo.</b> Household preferences fixed from weeks 1–26 are combined with the chain's promotion calendar to give each household's exposure in weeks 27–53 (a shift-share design), with household and week fixed effects and a 4-week-ahead placebo.</p>
+    <p><b>Profit.</b> Gross profit uses stated department margins on the everyday price (grocery 25%, produce 40%, meat 28%, deli 40%, bakery 55%, health and general merchandise 30%) because the data has no cost prices. The sliders above show how the answer moves with those assumptions.</p>
+    <p><b>Campaigns.</b> Each campaign household is matched to a non-campaign household with similar spend, trips and trend in the matching weeks, then compared on the change in spend between four holdout weeks and the campaign weeks.</p>
+    <p><b>Limits.</b> One retailer, one year, a household panel rather than full store sales. Supplier funding, mailing costs and competitor prices are not observed. Effects beyond two weeks (long-run loyalty, price image) are not measured.</p>
+  </div>
+</section>
+</main>
+<footer class="wrap">Data: 84.51° The Complete Journey, provided for research and educational use. Margin benchmarks: Naveo Commerce (2023) via AgMRC. Built with SQL (dbt + DuckDB), Python and this page. Analysis and page by Lakshay Saini. © 2026 Lakshay Saini.</footer>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const D = {"summary": {"products": 2186, "promo_weeks": 23555, "shelf_value": 1937090.4700000002, "promo_spend": 166370.734964, "promo_spend_in_cells": 163927.57029099995, "incr_gp": -54407.055375793236, "roi": -0.3270229910781247, "roi_lo": -0.3509253016545909, "roi_hi": -0.30988368217831874, "subsidised_share": 0.45404136315055943, "lift_pct": 1.2024425110987114, "breakeven_supplier_share": 0.3270229910781247, "optimiser_gain": 7575.345901181856, "optimiser_gain_per_100": 4.621154262052625, "depth_cut_gain": 17897.012154021882, "combined_gain": 25472.35805520374, "combined_gain_pct_of_loss": 0.46818115553698736, "per_million": {"incr_gp": -327022.9910781248, "combined_gain": 153106.00185011837, "realloc_gain": 45532.923220066565, "depth_cut_gain": 107573.07863005181, "stop_kill_saving": -0.0}, "stop_kill_saving": -0.0, "everyday_share_of_discount": 0.510571255596739, "all_card_discount_core": 354382.97000000335, "validation": {"held_out_events": 4709, "smearing_factor": 1.153607687905844, "model_wape": 0.43725398837314794, "model_bias": -0.017866704491323104, "model_wape_no_smearing": 0.4267249351531039, "model_bias_no_smearing": -0.1575914969568074, "lift_rank_corr": 0.5565718979344539, "naive_no_lift_wape": 0.6155003353813011, "naive_no_lift_bias": -0.5404787377610377, "naive_avg_promo_wape": 0.4283842638850992, "naive_avg_promo_bias": -0.005984836286688777}, "halo": {"halo_gp_per_dollar": -0.037540633113961004, "halo_gp_per_dollar_lo": -0.11329730464113869, "halo_gp_per_dollar_hi": 0.03821603841321668, "coef": {"nonpromo": {"coef": -0.9380215662642984, "se": 0.9657751900994225, "lead_coef": 0.40507715492462554, "lead_se": 1.2681467297173246}, "promo_items": {"coef": 3.833221328034498, "se": 0.3150136615003716, "lead_coef": -0.0310362069046167, "lead_se": 0.3061876615199109}, "trips": {"coef": 0.11460412859956412, "se": 0.03378252945571119, "lead_coef": 0.007920049571942294, "lead_se": 0.03233928676582061}}, "mean_exposure": 0.22605077284748945}, "roi_with_halo_upper": -0.288806952664908, "optimal_depth": [{"group": "Deli & bakery", "supplier_share": 0.0, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.25, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.5, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.75, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1664982258253095}, {"group": "Fresh meat", "supplier_share": 0.0, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.25, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.5, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0923191265832357, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.75, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1925855331259842}, {"group": "Grocery", "supplier_share": 0.0, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.25, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.5, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0389931245389419, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.75, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1855252734829641}, {"group": "Health, beauty & GM", "supplier_share": 0.0, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.25, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.5, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0844798284966111, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.75, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2513288441326413}, {"group": "Packaged meat & seafood", "supplier_share": 0.0, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.25, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.5, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.1242800679408107, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.75, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2101015767136294}, {"group": "Produce", "supplier_share": 0.0, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.25, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.5, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.2288506453499716, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.75, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2577955890671141}], "campaign_economics": {"Type A": {"mde_80": 2.117860317045866, "gp_per_contact": 0.7874731935496303, "gp_per_contact_hi": 4.260983316369277, "weeks_per_contact": 8.34479610468655}, "Type B": {"mde_80": 3.3746907217523447, "gp_per_contact": -6.604364807801909, "gp_per_contact_hi": -2.775887713727547, "weeks_per_contact": 5.70303867403315}, "Type C": {"mde_80": 6.446073725539075, "gp_per_contact": 0.5707419273332723, "gp_per_contact_hi": 10.608569688306565, "weeks_per_contact": 7.9381818181818184}}, "verdict_counts": {"Fix": 8, "Keep": 6}, "campaign_selection_gap": {"Type A": 2.52257118252045, "Type B": 3.934635096940025, "Type C": 4.630893398406808}, "campaign_did": {"Type A": {"naive_gap": 40.41869347350416, "same_window_did": 6.8441389354874, "did_per_hh_week": 0.3370759636774738, "lo": -1.141101015349231, "hi": 1.8239034285149816, "placebo_gap_pct": 0.0867195198631601}, "Type B": {"naive_gap": 60.539802948300206, "same_window_did": 5.800971583111326, "did_per_hh_week": -4.136494712198273, "lo": -6.463181575767065, "hi": -1.7386145653137812, "placebo_gap_pct": 0.1554411337435259}, "Type C": {"naive_gap": 67.2546330867324, "same_window_did": 13.17107821804856, "did_per_hh_week": 0.256818598259279, "lo": -4.250930666745409, "hi": 4.773572549009297, "placebo_gap_pct": 0.0904480020633316}}, "pilot": [{"detectable_lift": 0.02, "households_per_arm": 58833, "households_per_arm_cuped": 17656}, {"detectable_lift": 0.03, "households_per_arm": 26149, "households_per_arm_cuped": 7848}, {"detectable_lift": 0.05, "households_per_arm": 9415, "households_per_arm_cuped": 2826}, {"detectable_lift": 0.1, "households_per_arm": 2355, "households_per_arm_cuped": 707}], "cuped_rho": 0.8365971169090969, "six_week_mean_spend": 35.16878016290896, "six_week_sd": 43.06005398210496, "sensitivity": [{"margin_shift": -0.1, "vendor_share": 0.0, "roi": -0.5658148045315402, "incr_gp": -94135.02488342434}, {"margin_shift": -0.1, "vendor_share": 0.25, "roi": -0.3158148045315402, "incr_gp": -52542.34114242435}, {"margin_shift": -0.1, "vendor_share": 0.5, "roi": -0.0658148045315402, "incr_gp": -10949.657401424349}, {"margin_shift": -0.05, "vendor_share": 0.0, "roi": -0.4464188978048325, "incr_gp": -74271.0401296088}, {"margin_shift": -0.05, "vendor_share": 0.25, "roi": -0.1964188978048324, "incr_gp": -32678.356388608783}, {"margin_shift": -0.05, "vendor_share": 0.5, "roi": 0.0535811021951675, "incr_gp": 8914.327352391216}, {"margin_shift": 0.0, "vendor_share": 0.0, "roi": -0.3270229910781247, "incr_gp": -54407.05537579324}, {"margin_shift": 0.0, "vendor_share": 0.25, "roi": -0.0770229910781247, "incr_gp": -12814.371634793228}, {"margin_shift": 0.0, "vendor_share": 0.5, "roi": 0.1729770089218752, "incr_gp": 28778.31210620677}, {"margin_shift": 0.05, "vendor_share": 0.0, "roi": -0.207627084351417, "incr_gp": -34543.07062197767}, {"margin_shift": 0.05, "vendor_share": 0.25, "roi": 0.042372915648583, "incr_gp": 7049.61311902233}, {"margin_shift": 0.05, "vendor_share": 0.5, "roi": 0.292372915648583, "incr_gp": 48642.29686002233}, {"margin_shift": 0.1, "vendor_share": 0.0, "roi": -0.0882311776247092, "incr_gp": -14679.085868162114}, {"margin_shift": 0.1, "vendor_share": 0.25, "roi": 0.1617688223752907, "incr_gp": 26913.597872837883}, {"margin_shift": 0.1, "vendor_share": 0.5, "roi": 0.4117688223752907, "incr_gp": 68506.28161383788}], "traffic_threshold": 0.35900743962646803, "keep_max_funding": 0.25, "K_total": 397279.69507631124, "A_total": -54407.055375793236}, "waterfall": [{"step": "Margin on extra units sold", "per_dollar": 0.6880877408205761, "value": 114477.6631600376}, {"step": "Extra discount on those extra units", "per_dollar": -0.6446535344197363, "value": -107251.48231855179}, {"step": "Extra discount to shoppers who would have bought anyway", "per_dollar": -0.3553464655802637, "value": -59119.25264544821}, {"step": "Margin taken from rival items (cannibalisation)", "per_dollar": -0.035607268619097014, "value": -5924.007450219744}, {"step": "Repeat buying in the weeks after", "per_dollar": 0.020496536720396093, "value": 3410.023878388912}], "types": [{"promo_type": "In-store display", "events": 2090, "promo_spend": 6435.226131, "incr_gp": 976.7130873052702, "roi": 0.1517760320185507, "roi_lo": 0.0840128470139557, "roi_hi": 0.2240202644925817, "subsidised_share": 0.5044373916401786, "lift_pct": 0.9824065713061024}, {"promo_type": "Mailer + display", "events": 2287, "promo_spend": 43067.869159, "incr_gp": -14308.109039752782, "roi": -0.3322223578540518, "roi_lo": -0.3459770526134335, "roi_hi": -0.31880909833051, "subsidised_share": 0.288423491512964, "lift_pct": 2.4671239667558496}, {"promo_type": "Mailer feature", "events": 10454, "promo_spend": 81321.188612, "incr_gp": -24196.684708096647, "roi": -0.2975446512906245, "roi_lo": -0.3319290517047228, "roi_hi": -0.2727290468276321, "subsidised_share": 0.4639785515582777, "lift_pct": 1.155272041437018}, {"promo_type": "Price cut only", "events": 8724, "promo_spend": 35546.451062, "incr_gp": -16878.974715249067, "roi": -0.4748427539449386, "roi_lo": -0.5039320176370123, "roi_hi": -0.4502178054304198, "subsidised_share": 0.5649911615221165, "lift_pct": 0.7699391921564691}], "cells": [{"group": "Deli & bakery", "promo_type": "Mailer feature", "events": 529, "promo_spend": 2404.532397, "incr_gp": 1707.631364215382, "roi": 0.710171909659399, "roi_lo": 0.4548960489452064, "roi_hi": 0.8949835446082987, "roi_cut5": 1.5795554580637832, "incr_gp_cut5": 2334.6369227957, "subsidised_share": 0.4763266046707108, "lift_pct": 1.0993998449683693, "breakeven_supplier_share": 0.0, "traffic_penetration": 0.2945903401943897, "verdict": "Keep", "action": "Keep. Pays back with no supplier funding.", "spend_optimised": 3606.7985955, "K": 9682.840703055059}, {"group": "Deli & bakery", "promo_type": "Price cut only", "events": 324, "promo_spend": 2853.752132, "incr_gp": 76.76702327778924, "roi": 0.0269003822781162, "roi_lo": -0.1458264896883814, "roi_hi": 0.1710782792757866, "roi_cut5": 0.3121158152329952, "incr_gp_cut5": 627.6861016353506, "subsidised_share": 0.4786265762730165, "lift_pct": 1.089311479080057, "breakeven_supplier_share": 0.0, "traffic_penetration": 0.2623630527673294, "verdict": "Keep", "action": "Keep. Pays back with no supplier funding.", "spend_optimised": 4280.628198, "K": 6951.916728525101}, {"group": "Fresh meat", "promo_type": "Mailer feature", "events": 946, "promo_spend": 23566.013422, "incr_gp": -5013.516561160684, "roi": -0.2127435163250958, "roi_lo": -0.2959992812513131, "roi_hi": -0.141018016976818, "roi_cut5": 0.0002993248322083, "incr_gp_cut5": 4.7325931017933325, "subsidised_share": 0.3391007425875493, "lift_pct": 1.9489761431053751, "breakeven_supplier_share": 0.2127435163250958, "traffic_penetration": 0.3937026945142881, "verdict": "Keep", "action": "Keep. Pays back once suppliers fund 21% of the extra discount.", "spend_optimised": 35349.020133, "K": 66258.9173601404}, {"group": "Fresh meat", "promo_type": "Price cut only", "events": 326, "promo_spend": 3499.482558, "incr_gp": -1728.0637108506862, "roi": -0.4938054933007859, "roi_lo": -0.5745108790970817, "roi_hi": -0.4203944670314289, "roi_cut5": -0.4491315268629305, "incr_gp_cut5": -1043.611923854656, "subsidised_share": 0.5629261140695468, "lift_pct": 0.776432066316353, "breakeven_supplier_share": 0.4938054933007859, "traffic_penetration": 0.3635376907460123, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 49\u00a2 to 45\u00a2); only run with at least 49% supplier funding.", "spend_optimised": 2799.5860464, "K": 6326.49588267612}, {"group": "Grocery", "promo_type": "In-store display", "events": 1666, "promo_spend": 5294.178014, "incr_gp": 692.3542732536813, "roi": 0.1307765381939953, "roi_lo": 0.0549265835449909, "roi_hi": 0.2046194679017016, "roi_cut5": 0.4979149269862754, "incr_gp_cut5": 1774.9601141571648, "subsidised_share": 0.5198791798521085, "lift_pct": 0.923523846991666, "breakeven_supplier_share": 0.0, "traffic_penetration": 0.4702751276109619, "verdict": "Keep", "action": "Keep. Pays back with no supplier funding.", "spend_optimised": 7941.267021, "K": 23946.129149014727}, {"group": "Grocery", "promo_type": "Mailer + display", "events": 1908, "promo_spend": 35864.922407, "incr_gp": -13027.157749397997, "roi": -0.3632283823610168, "roi_lo": -0.3780319016761453, "roi_hi": -0.3492236478783743, "roi_cut5": -0.2412980491706354, "incr_gp_cut5": -6228.549813125177, "subsidised_share": 0.3044891286938044, "lift_pct": 2.284189502232128, "breakeven_supplier_share": 0.3632283823610168, "traffic_penetration": 0.5898344917805562, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 36\u00a2 to 24\u00a2); only run with at least 36% supplier funding.", "spend_optimised": 28691.9379256, "K": 91351.05863040802}, {"group": "Grocery", "promo_type": "Mailer feature", "events": 7635, "promo_spend": 34188.03129, "incr_gp": -15182.236893769415, "roi": -0.4440804667863464, "roi_lo": -0.4644018720470447, "roi_hi": -0.4266253275105534, "roi_cut5": -0.3511177255173603, "incr_gp_cut5": -8238.516936433622, "subsidised_share": 0.5192596325604635, "lift_pct": 0.9258188722836224, "breakeven_supplier_share": 0.4440804667863464, "traffic_penetration": 0.6221608811578456, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 44\u00a2 to 35\u00a2); only run with at least 44% supplier funding.", "spend_optimised": 27350.425032, "K": 76023.17758492233}, {"group": "Grocery", "promo_type": "Price cut only", "events": 6616, "promo_spend": 17881.626543, "incr_gp": -10490.647877722722, "roi": -0.5866719032799299, "roi_lo": -0.6089420083222217, "roi_hi": -0.5685415115843031, "roi_cut5": -0.5798579760192478, "incr_gp_cut5": -6916.153954919799, "subsidised_share": 0.6018228781877604, "lift_pct": 0.6616184532752408, "breakeven_supplier_share": 0.5866719032799299, "traffic_penetration": 0.4256456522077668, "verdict": "Fix", "action": "Fix: only run with at least 59% supplier funding.", "spend_optimised": 14305.3012344, "K": 29563.914661109113}, {"group": "Health, beauty & GM", "promo_type": "Price cut only", "events": 455, "promo_spend": 1357.267765, "incr_gp": -654.551625447103, "roi": -0.4822568120499811, "roi_lo": -0.5252551968303262, "roi_hi": -0.4461809928440027, "roi_cut5": -0.4399279790997565, "incr_gp_cut5": -441.90581427761646, "subsidised_share": 0.4457236644414577, "lift_pct": 1.2435425349316225, "breakeven_supplier_share": 0.4822568120499811, "traffic_penetration": 0.458920888410894, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 48\u00a2 to 44\u00a2); only run with at least 48% supplier funding.", "spend_optimised": 1085.814212, "K": 2342.38713184299}, {"group": "Packaged meat & seafood", "promo_type": "Mailer + display", "events": 263, "promo_spend": 6679.244957, "incr_gp": -1257.7137100940631, "roi": -0.188301779346474, "roi_lo": -0.2263583275741639, "roi_hi": -0.1561782011314597, "roi_cut5": -0.0151451357905482, "incr_gp_cut5": -72.42788241892666, "subsidised_share": 0.1823678863806827, "lift_pct": 4.483421559827459, "breakeven_supplier_share": 0.188301779346474, "traffic_penetration": 0.3087795937218624, "verdict": "Keep", "action": "Keep. Pays back once suppliers fund 19% of the extra discount.", "spend_optimised": 10018.8674355, "K": 19362.611596092633}, {"group": "Packaged meat & seafood", "promo_type": "Mailer feature", "events": 669, "promo_spend": 4422.525879, "incr_gp": -1058.530083626878, "roi": -0.2393496641033173, "roi_lo": -0.2822795344283439, "roi_hi": -0.2015881720803404, "roi_cut5": -0.085109308511753, "incr_gp_cut5": -262.45114486398944, "subsidised_share": 0.4110115848578461, "lift_pct": 1.433021444750428, "breakeven_supplier_share": 0.2393496641033173, "traffic_penetration": 0.29766235269639, "verdict": "Keep", "action": "Keep. Pays back once suppliers fund 24% of the extra discount.", "spend_optimised": 6633.788818499999, "K": 12014.270697761149}, {"group": "Packaged meat & seafood", "promo_type": "Price cut only", "events": 533, "promo_spend": 2456.149304, "incr_gp": -1087.247809578918, "roi": -0.4426635660170429, "roi_lo": -0.4907715122460965, "roi_hi": -0.3889718547552431, "roi_cut5": -0.3961636107840959, "incr_gp_cut5": -650.1241135723985, "subsidised_share": 0.5024306643015327, "lift_pct": 0.9903243791661812, "breakeven_supplier_share": 0.4426635660170429, "traffic_penetration": 0.294118505869397, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 44\u00a2 to 40\u00a2); only run with at least 44% supplier funding.", "spend_optimised": 1228.074652, "K": 4888.933908646721}, {"group": "Produce", "promo_type": "Mailer feature", "events": 466, "promo_spend": 15961.670863, "incr_gp": -4414.688861647906, "roi": -0.2765806223884361, "roi_lo": -0.324819084744945, "roi_hi": -0.2335231837522488, "roi_cut5": -0.2006892974526793, "incr_gp_cut5": -2498.878628901288, "subsidised_share": 0.3918564122563395, "lift_pct": 1.5519551772597584, "breakeven_supplier_share": 0.2765806223884361, "traffic_penetration": 0.3544771885069238, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 28\u00a2 to 20\u00a2); only run with at least 28% supplier funding.", "spend_optimised": 16886.974607099954, "K": 28867.45500338023}, {"group": "Produce", "promo_type": "Price cut only", "events": 470, "promo_spend": 7498.17276, "incr_gp": -2995.230714927428, "roi": -0.3994614169075811, "roi_lo": -0.4803335856018529, "roi_hi": -0.3291465548192336, "roi_cut5": -0.3658274408816504, "incr_gp_cut5": -2090.577981432813, "subsidised_share": 0.5214257740950324, "lift_pct": 0.9178185077934892, "breakeven_supplier_share": 0.3994614169075811, "traffic_penetration": 0.353000347136323, "verdict": "Fix", "action": "Fix: cut the extra discount by 5 pts (loss per $1 falls from 40\u00a2 to 37\u00a2); only run with at least 40% supplier funding.", "spend_optimised": 3749.08638, "K": 11257.355112681431}], "campaigns": [{"campaign_type": "Type A", "campaigns": 3.0, "households_exposures": 3286.0, "naive_gap": 40.41869347350416, "same_window_did": 6.8441389354874, "did_per_hh_week": 0.3370759636774738, "lo": -1.141101015349231, "hi": 1.8239034285149816, "placebo_gap_pct": 0.0867195198631601, "pre_spend_treated": 56.049452982349365, "pre_spend_all_controls": 15.911517490540868, "selection_gap_pct": 2.52257118252045, "mde_80": 2.117860317045866, "gp_per_contact": 0.7874731935496303, "gp_per_contact_hi": 4.260983316369277, "weeks_per_contact": 8.34479610468655}, {"campaign_type": "Type B", "campaigns": 13.0, "households_exposures": 2172.0, "naive_gap": 60.539802948300206, "same_window_did": 5.800971583111326, "did_per_hh_week": -4.136494712198273, "lo": -6.463181575767065, "hi": -1.7386145653137812, "placebo_gap_pct": 0.1554411337435259, "pre_spend_treated": 79.5670211786372, "pre_spend_all_controls": 16.124195531292038, "selection_gap_pct": 3.934635096940025, "mde_80": 3.3746907217523447, "gp_per_contact": -6.604364807801909, "gp_per_contact_hi": -2.775887713727547, "weeks_per_contact": 5.70303867403315}, {"campaign_type": "Type C", "campaigns": 4.0, "households_exposures": 550.0, "naive_gap": 67.2546330867324, "same_window_did": 13.17107821804856, "did_per_hh_week": 0.256818598259279, "lo": -4.250930666745409, "hi": 4.773572549009297, "placebo_gap_pct": 0.0904480020633316, "pre_spend_treated": 84.46897727272727, "pre_spend_all_controls": 15.000990304065557, "selection_gap_pct": 4.630893398406808, "mde_80": 6.446073725539075, "gp_per_contact": 0.5707419273332723, "gp_per_contact_hi": 10.608569688306565, "weeks_per_contact": 7.938181818181818}], "event_study": [{"campaign_type": "Type A", "rel_week": -4, "gap": 0.0475326811177794}, {"campaign_type": "Type A", "rel_week": -3, "gap": -3.881396724773945}, {"campaign_type": "Type A", "rel_week": -2, "gap": 4.231008422515774}, {"campaign_type": "Type A", "rel_week": -1, "gap": -0.3971443788596082}, {"campaign_type": "Type A", "rel_week": 0, "gap": -0.6022433217384097}, {"campaign_type": "Type A", "rel_week": 1, "gap": -6.73537044630666}, {"campaign_type": "Type A", "rel_week": 2, "gap": 0.7836880424207685}, {"campaign_type": "Type A", "rel_week": 3, "gap": 4.039601228649516}, {"campaign_type": "Type A", "rel_week": 4, "gap": -1.8172808868186323}, {"campaign_type": "Type A", "rel_week": 5, "gap": 3.3293794665904195}, {"campaign_type": "Type A", "rel_week": 6, "gap": 3.029385067381874}, {"campaign_type": "Type A", "rel_week": 7, "gap": -0.5719240768539781}, {"campaign_type": "Type A", "rel_week": 8, "gap": 4.74326566637246}, {"campaign_type": "Type B", "rel_week": -4, "gap": 0.9892330969738355}, {"campaign_type": "Type B", "rel_week": -3, "gap": -2.6045081811428683}, {"campaign_type": "Type B", "rel_week": -2, "gap": 3.793076681328669}, {"campaign_type": "Type B", "rel_week": -1, "gap": -2.177801597159637}, {"campaign_type": "Type B", "rel_week": 0, "gap": -2.6922755737348774}, {"campaign_type": "Type B", "rel_week": 1, "gap": -3.711152810649049}, {"campaign_type": "Type B", "rel_week": 2, "gap": -3.8752850892277366}, {"campaign_type": "Type B", "rel_week": 3, "gap": 1.977525608912484}, {"campaign_type": "Type B", "rel_week": 4, "gap": -2.173296601013273}, {"campaign_type": "Type B", "rel_week": 5, "gap": -11.03453565149373}, {"campaign_type": "Type B", "rel_week": 6, "gap": -8.752757009345798}, {"campaign_type": "Type B", "rel_week": 7, "gap": -5.923878504672896}, {"campaign_type": "Type C", "rel_week": -4, "gap": -1.7585229241700562}, {"campaign_type": "Type C", "rel_week": -3, "gap": -2.765009722223143}, {"campaign_type": "Type C", "rel_week": -2, "gap": 2.983038450568987}, {"campaign_type": "Type C", "rel_week": -1, "gap": 1.5404941958242158}, {"campaign_type": "Type C", "rel_week": 0, "gap": -1.5898627695344416}, {"campaign_type": "Type C", "rel_week": 1, "gap": 7.755665021066354}, {"campaign_type": "Type C", "rel_week": 2, "gap": -4.6667627545994}, {"campaign_type": "Type C", "rel_week": 3, "gap": -3.548740783862805}, {"campaign_type": "Type C", "rel_week": 4, "gap": -3.153599096024367}, {"campaign_type": "Type C", "rel_week": 5, "gap": -0.8635087863822242}, {"campaign_type": "Type C", "rel_week": 6, "gap": -27.10790999212185}, {"campaign_type": "Type C", "rel_week": 7, "gap": -27.83735326943277}, {"campaign_type": "Type C", "rel_week": 8, "gap": -2.098326221113443}, {"campaign_type": "Type C", "rel_week": 9, "gap": 8.454432444852944}, {"campaign_type": "Type C", "rel_week": 10, "gap": -10.343235294117656}, {"campaign_type": "Type C", "rel_week": 11, "gap": 20.775588235294123}, {"campaign_type": "Type C", "rel_week": 12, "gap": 9.282647058823535}, {"campaign_type": "Type C", "rel_week": 13, "gap": -3.7626470588235126}, {"campaign_type": "Type C", "rel_week": 14, "gap": -24.01676470588237}, {"campaign_type": "Type C", "rel_week": 15, "gap": -5.3614705882353}], "halo": {"household_weeks": 53866, "mean_exposure": 0.22605077284748945, "sd_exposure": 0.14199004945871058, "mean_nonpromo_spend": 32.68342646567408, "coef": {"nonpromo": {"coef": -0.9380215662642984, "se": 0.9657751900994225, "lead_coef": 0.40507715492462554, "lead_se": 1.2681467297173246}, "promo_items": {"coef": 3.833221328034498, "se": 0.3150136615003716, "lead_coef": -0.0310362069046167, "lead_se": 0.3061876615199109}, "trips": {"coef": 0.11460412859956412, "se": 0.03378252945571119, "lead_coef": 0.007920049571942294, "lead_se": 0.03233928676582061}}, "nonpromo_margin": 0.28079388222955004, "promo_spend_period": 85431.807551, "halo_sales": -11421.773573089267, "halo_sales_lo": -34470.813428321075, "halo_sales_hi": 11627.266282142542, "halo_gp_per_dollar": -0.037540633113961004, "halo_gp_per_dollar_lo": -0.11329730464113869, "halo_gp_per_dollar_hi": 0.03821603841321668, "effect_of_10pt_more_exposure": -0.09380215662642985}, "optimal_depth": [{"group": "Deli & bakery", "supplier_share": 0.0, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.25, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.5, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1664982258253095}, {"group": "Deli & bakery", "supplier_share": 0.75, "depth_coef": 0.9356046028656289, "depth_coef_se": 0.2927526804971521, "margin": 0.4291909897341512, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1664982258253095}, {"group": "Fresh meat", "supplier_share": 0.0, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.25, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.5, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.0923191265832357, "current_extra_discount": 0.1925855331259842}, {"group": "Fresh meat", "supplier_share": 0.75, "depth_coef": 2.138210170311733, "depth_coef_se": 0.3986858041115044, "margin": 0.28, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1925855331259842}, {"group": "Grocery", "supplier_share": 0.0, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.25, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.5, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.0389931245389419, "current_extra_discount": 0.1855252734829641}, {"group": "Grocery", "supplier_share": 0.75, "depth_coef": 2.1691650455318894, "depth_coef_se": 0.0751402680047934, "margin": 0.25, "optimal_extra_discount": 0.5, "current_extra_discount": 0.1855252734829641}, {"group": "Health, beauty & GM", "supplier_share": 0.0, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.25, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.5, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.0844798284966111, "current_extra_discount": 0.2513288441326413}, {"group": "Health, beauty & GM", "supplier_share": 0.75, "depth_coef": 1.939788305632628, "depth_coef_se": 0.241107711934449, "margin": 0.2999999999999999, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2513288441326413}, {"group": "Packaged meat & seafood", "supplier_share": 0.0, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.25, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.5, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.1242800679408107, "current_extra_discount": 0.2101015767136294}, {"group": "Packaged meat & seafood", "supplier_share": 0.75, "depth_coef": 2.2950522260344006, "depth_coef_se": 0.1903468838698352, "margin": 0.2799999999999999, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2101015767136294}, {"group": "Produce", "supplier_share": 0.0, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.25, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.0, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.5, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.2288506453499716, "current_extra_discount": 0.2577955890671141}, {"group": "Produce", "supplier_share": 0.75, "depth_coef": 1.7508555194161948, "depth_coef_se": 0.3012450620113089, "margin": 0.4000000000000001, "optimal_extra_discount": 0.5, "current_extra_discount": 0.2577955890671141}]};
+const $ = s => document.querySelector(s);
+const S = D.summary;
+const money = (v, d = 0) => (v < 0 ? "−" : "") + "$" + Math.abs(v).toLocaleString("en-US", {maximumFractionDigits: d, minimumFractionDigits: d});
+const cents = v => (v < 0 ? "−" : "+") + (Math.abs(v) < 0.01 ? (Math.abs(v) * 100).toFixed(1) : Math.round(Math.abs(v) * 100)) + "¢";
+const pct = (v, d = 0) => (v * 100).toFixed(d) + "%";
+const kmoney = v => (v < 0 ? "−" : "") + "$" + Math.round(Math.abs(v) / 1000) + "k";
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs = {}, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; }
+const tip = $("#tip");
+function showTip(ev, html) { tip.innerHTML = html; tip.hidden = false; const x = Math.min(ev.clientX + 14, innerWidth - 300), y = ev.clientY + 14; tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip() { tip.hidden = true; }
+function hover(node, html) { node.addEventListener("mousemove", e => showTip(e, html())); node.addEventListener("mouseleave", hideTip); }
+function width(svg) { return Math.max(300, svg.parentElement.getBoundingClientRect().width - 36); }
+
+/* ---------- header ---------- */
+$("#meta").textContent = `${S.products.toLocaleString()} core products · ${S.promo_weeks.toLocaleString()} promoted product-weeks · ${money(S.promo_spend)} of promotion spend analysed`;
+const ca = D.campaigns.find(c => c.campaign_type === "Type A");
+$("#tags").innerHTML = [
+  [cents(S.roi), "gross profit per $1 of promotion spend", `90% interval ${cents(S.roi_lo)} to ${cents(S.roi_hi)} · ${kmoney(S.per_million.incr_gp)} per $1M of spend`],
+  [pct(S.subsidised_share), "of promoted units would have sold anyway", `the ${cents(D.waterfall[2].per_dollar).replace("−", "")} of discount on these is more than the whole loss`],
+  [cents(S.halo.halo_gp_per_dollar), "halo: extra profit on other items per $1", `95% interval ${cents(S.halo.halo_gp_per_dollar_lo)} to ${cents(S.halo.halo_gp_per_dollar_hi)}: no rescue`],
+  ["+" + kmoney(S.per_million.combined_gain), "recovered per $1M of spend by the plan", `${pct(S.combined_gain_pct_of_loss)} of the loss, same budget`],
+].map(([b, s, m]) => `<div class="tag"><b>${b}</b><span>${s}</span><small>${m}</small></div>`).join("");
+$("#everyday").innerHTML = `<b class="big">${pct(S.everyday_share_of_discount)}</b><p><strong>of card discounts on core products are everyday prices, not promotions.</strong> Many products carry a card discount almost every week. Counting that as promotion cost would overstate spend and blame the wrong lines, so promotion spend here is only the discount beyond each product's usual level.</p>`;
+/* ---------- waterfall (horizontal) ---------- */
+function drawWater() {
+  const svg = $("#water"); svg.querySelectorAll(":not(title)").forEach(n => n.remove());
+  const W = width(svg), narrow = W < 620, labW = narrow ? 0 : 360, rowH = narrow ? 52 : 38, rows = [...D.waterfall, {step: "Net gross profit per $1 of promotion spend", per_dollar: S.roi, total: true}];
+  const SHORT = ["Margin on extra units", "Discount on extra units", "Discount to would-buy-anyway shoppers", "Cannibalisation", "Repeat buying after", "Net per $1"];
+  const H = rows.length * rowH + 30; svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const lo = -1.1, hi = 0.8, x0 = labW + 8, x1 = W - 60, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+  [-1, -0.5, 0, 0.5].forEach(t => { svg.append(el("line", {x1: X(t), x2: X(t), y1: 0, y2: H - 22, class: t === 0 ? "zero" : "grid"})); svg.append(el("text", {x: X(t), y: H - 6, "text-anchor": "middle"}, (t < 0 ? "−" : "") + "$" + Math.abs(t).toFixed(2))); });
+  let run = 0;
+  rows.forEach((r, i) => {
+    const y = i * rowH + (narrow ? 20 : 8), h = 20;
+    const a = r.total ? 0 : run, b = r.total ? r.per_dollar : run + r.per_dollar; if (!r.total) run = b;
+    const xa = Math.min(X(a), X(b)), w = Math.max(2, Math.abs(X(b) - X(a)));
+    const fill = r.total ? "var(--ink)" : r.per_dollar >= 0 ? "var(--s1)" : "var(--neg)";
+    const rect = el("rect", {x: xa, y, width: w, height: h, rx: 4, fill}); svg.append(rect);
+    if (narrow) svg.append(el("text", {x: 2, y: y - 6, class: "lab"}, SHORT[i]));
+    else svg.append(el("text", {x: labW, y: y + 14, "text-anchor": "end", class: "lab"}, r.step));
+    const vx = r.per_dollar >= 0 || r.total ? Math.max(X(a), X(b)) + 6 : Math.min(X(a), X(b)) - 6;
+    svg.append(el("text", {x: r.per_dollar < 0 && !r.total ? vx : vx, y: y + 14, "text-anchor": r.per_dollar < 0 && !r.total ? "end" : "start", class: "val"}, cents(r.per_dollar)));
+    if (!r.total && i < rows.length - 1) svg.append(el("line", {x1: X(b), x2: X(b), y1: y + h, y2: y + rowH + (narrow ? 0 : 0), stroke: "var(--line-2)", "stroke-dasharray": "2 2"}));
+    const hit = el("rect", {x: 0, y: y - 4, width: W, height: rowH - 4, class: "hit"}); svg.append(hit);
+    hover(hit, () => `<b>${r.step}</b>${cents(r.per_dollar)} per $1 of promotion spend${r.value != null ? `<br>${money(r.value)} in total on this panel` : ""}`);
+  });
+}
+
+/* ---------- bar charts by type ---------- */
+const TYPES = [...D.types].sort((a, b) => b.roi - a.roi);
+function hbars(svgSel, rows, val, opts) {
+  const svg = $(svgSel); svg.innerHTML = "";
+  const W = width(svg), narrow = W < 460, labW = narrow ? 0 : 130, rowH = narrow ? 50 : 40, H = rows.length * rowH + 26;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const x0 = labW + 8, x1 = W - 70, X = v => x0 + (v - opts.lo) / (opts.hi - opts.lo) * (x1 - x0);
+  opts.ticks.forEach(t => { svg.append(el("line", {x1: X(t), x2: X(t), y1: 0, y2: H - 22, class: t === 0 ? "zero" : "grid"})); svg.append(el("text", {x: X(t), y: H - 6, "text-anchor": "middle"}, opts.tick(t))); });
+  rows.forEach((r, i) => {
+    const y = i * rowH + (narrow ? 20 : 10), v = val(r), xa = Math.min(X(0), X(v)), w = Math.max(2, Math.abs(X(v) - X(0)));
+    if (narrow) svg.append(el("text", {x: 2, y: y - 6, class: "lab"}, r.promo_type)); else svg.append(el("text", {x: labW, y: y + 13, "text-anchor": "end", class: "lab"}, r.promo_type));
+    svg.append(el("rect", {x: xa, y, width: w, height: 18, rx: 4, fill: opts.color}));
+    if (opts.ci) { const [l, h] = opts.ci(r); svg.append(el("line", {x1: X(l), x2: X(h), y1: y + 9, y2: y + 9, stroke: "var(--ink)", "stroke-width": 1.5})); [l, h].forEach(q => svg.append(el("line", {x1: X(q), x2: X(q), y1: y + 4, y2: y + 14, stroke: "var(--ink)", "stroke-width": 1.5}))); }
+    const end = v < 0 ? Math.min(X(v), opts.ci ? X(opts.ci(r)[0]) : X(v)) - 6 : Math.max(X(v), opts.ci ? X(opts.ci(r)[1]) : X(v)) + 6;
+    svg.append(el("text", {x: end, y: y + 13, "text-anchor": v < 0 ? "end" : "start", class: "val"}, opts.fmt(v)));
+    const hit = el("rect", {x: 0, y: y - 6, width: W, height: rowH - 4, class: "hit"}); svg.append(hit); hover(hit, () => opts.tip(r));
+  });
+}
+function drawTypes() {
+  hbars("#roi", TYPES, r => r.roi, {lo: -0.6, hi: 0.3, ticks: [-0.4, -0.2, 0, 0.2], tick: t => t === 0 ? "0¢" : cents(t).replace("+", ""), color: "var(--s1)", fmt: cents,
+    ci: r => [r.roi_lo, r.roi_hi],
+    tip: r => `<b>${r.promo_type}</b>${cents(r.roi)} per $1 (90%: ${cents(r.roi_lo)} to ${cents(r.roi_hi)})<br>${r.events.toLocaleString()} promoted product-weeks · ${money(r.promo_spend)} of promotion spend<br>Lift over baseline: +${pct(r.lift_pct)}`});
+  hbars("#subs", TYPES, r => r.subsidised_share, {lo: 0, hi: 0.62, ticks: [0, 0.2, 0.4, 0.6], tick: t => pct(t), color: "var(--s2)", fmt: v => pct(v),
+    tip: r => `<b>${r.promo_type}</b>${pct(r.subsidised_share)} of promoted units would have sold without the promotion`});
+}
+
+/* ---------- keep / fix / kill with scenario ---------- */
+const SHAPE = {Keep: "M5 0a5 5 0 1 0 .01 0z", Fix: "M5 0l5 9H0z", Kill: "M1 0l4 4 4-4 1 1-4 4 4 4-1 1-4-4-4 4-1-1 4-4-4-4z"};
+const icon = v => `<svg viewBox="0 0 10 10" aria-hidden="true"><path d="${SHAPE[v]}"/></svg>`;
+const NAME = {Keep: "Keep", Fix: "Fix", Kill: "Stop"};
+const USED = ["Keep", "Fix", "Kill"].filter(v => D.cells.some(c => c.verdict === v));
+$("#kfk-legend").innerHTML = USED.map(v => `<span class="chip ${v}">${icon(v)}${NAME[v]}</span>`).join(" ");
+const label = c => `${c.group} · ${c.promo_type}`;
+function scen() { return {v: +$("#sup").value / 100, dm: +$("#mar").value / 100}; }
+function cellNow(c, s) { const gp = c.incr_gp + c.K * s.dm + s.v * c.promo_spend; return {gp, roi: gp / c.promo_spend, be: Math.max(0, -(c.incr_gp + c.K * s.dm) / c.promo_spend)}; }
+function drawKfk() {
+  const s = scen(); $("#sup-o").textContent = pct(s.v); $("#mar-o").textContent = (s.dm > 0 ? "+" : s.dm < 0 ? "−" : "±") + Math.abs(s.dm * 100).toFixed(0) + " pts";
+  const cs = D.cells.map(c => ({...c, now: cellNow(c, s)}));
+  const totGp = cs.reduce((a, c) => a + c.now.gp, 0), spend = cs.reduce((a, c) => a + c.promo_spend, 0), paying = cs.filter(c => c.now.gp >= 0);
+  $("#kpis").innerHTML = [[money(totGp), "incremental gross profit from these promotions"], [cents(totGp / spend), "per $1 of promotion spend"],
+    [`${paying.length} of ${cs.length}`, "lines that pay back at this supplier funding"]].map(([b, t]) => `<div class="kpi"><b>${b}</b><span>${t}</span></div>`).join("");
+  const svg = $("#kfk"); svg.innerHTML = ""; const W = width(svg) * (innerWidth > 900 ? 1 : 1), H = 300;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const x0 = 44, x1 = W - 12, y0 = H - 34, y1 = 10, X = v => x0 + v / 0.8 * (x1 - x0), Y = v => y0 - (v - 0.15) / (0.65 - 0.15) * (y0 - y1);
+  [0, 0.2, 0.4, 0.6, 0.8].forEach(t => { svg.append(el("line", {x1: X(t), x2: X(t), y1: y1, y2: y0, class: "grid"})); svg.append(el("text", {x: X(t), y: y0 + 16, "text-anchor": "middle"}, pct(t))); });
+  [0.2, 0.4, 0.6].forEach(t => { svg.append(el("line", {x1: x0, x2: x1, y1: Y(t), y2: Y(t), class: "grid"})); svg.append(el("text", {x: x0 - 6, y: Y(t) + 4, "text-anchor": "end"}, pct(t))); });
+  svg.append(el("text", {x: (x0 + x1) / 2, y: H - 2, "text-anchor": "middle"}, "Supplier funding needed to break even"));
+  svg.append(el("text", {x: 12, y: (y0 + y1) / 2, transform: `rotate(-90 12 ${(y0 + y1) / 2})`, "text-anchor": "middle"}, "Households buying the category"));
+  svg.append(el("line", {x1: X(s.v), x2: X(s.v), y1: y1, y2: y0, stroke: "var(--ink)", "stroke-dasharray": "5 4", "stroke-width": 1.5}));
+  const maxS = Math.max(...cs.map(c => c.promo_spend));
+  cs.sort((a, b) => b.promo_spend - a.promo_spend).forEach(c => {
+    const r = 6 + 14 * Math.sqrt(c.promo_spend / maxS), cx = X(Math.min(c.now.be, 0.8)), cy = Y(c.traffic_penetration);
+    const col = c.verdict === "Keep" ? "var(--good)" : c.verdict === "Fix" ? "var(--warn)" : "var(--crit)";
+    const g = el("g", {transform: `translate(${cx - r} ${cy - r}) scale(${2 * r / 10})`});
+    g.append(el("path", {d: SHAPE[c.verdict], fill: col, "fill-opacity": .9, stroke: c.verdict === "Kill" ? "none" : "var(--surface)", "stroke-width": 2 * 10 / (2 * r)}));
+    svg.append(g);
+    const hit = el("circle", {cx, cy, r: Math.max(r, 12), class: "hit"}); svg.append(hit);
+    hover(hit, () => `<b>${label(c)}</b>${c.action}<br>Break-even supplier funding ${pct(c.now.be)} · ${money(c.promo_spend)} of promotion spend<br>${pct(c.traffic_penetration)} of households buy the category`);
+  });
+  $("#kfk-t tbody").innerHTML = cs.sort((a, b) => a.now.be - b.now.be).map(c => `<tr><td>${c.group}<br><span style="color:var(--muted)">${c.promo_type}</span></td>
+    <td><span class="chip ${c.verdict}">${icon(c.verdict)}${NAME[c.verdict]}</span></td><td class="n">${pct(c.now.be)}</td>
+    <td class="n"><span class="pays ${c.now.gp >= 0 ? "y" : "n"}">${c.now.gp >= 0 ? "Yes" : "No"}</span><br><span style="color:var(--muted)">${money(c.now.gp)}</span></td><td style="min-width:220px;color:var(--ink-2)">${c.action}</td></tr>`).join("");
+}
+["#sup", "#mar"].forEach(s => $(s).addEventListener("input", drawKfk));
+
+/* ---------- campaigns ---------- */
+function drawCamp() {
+  const svg = $("#camp"); svg.innerHTML = ""; const W = width(svg), groups = D.campaigns, gh = 92, H = groups.length * gh + 28;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const x0 = 120, x1 = W - 60, lo = -12, hi = 70, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+  [0, 20, 40, 60].forEach(t => { svg.append(el("line", {x1: X(t), x2: X(t), y1: 0, y2: H - 22, class: t === 0 ? "zero" : "grid"})); svg.append(el("text", {x: X(t), y: H - 6, "text-anchor": "middle"}, "$" + t)); });
+  groups.forEach((c, i) => {
+    const y = i * gh + 6; svg.append(el("text", {x: 0, y: y + 34, class: "lab"}, c.campaign_type));
+    [["naive_gap", "var(--s1)", "Naive comparison"], ["same_window_did", "var(--s2)", "Matched, same weeks"], ["did_per_hh_week", "var(--s3)", "Matched, holdout weeks"]].forEach(([k, col, nm], j) => {
+      const v = c[k], yy = y + j * 24, xa = Math.min(X(0), X(v)), w = Math.max(2, Math.abs(X(v) - X(0)));
+      svg.append(el("rect", {x: xa, y: yy, width: w, height: 18, rx: 4, fill: col}));
+      if (k === "did_per_hh_week") { svg.append(el("line", {x1: X(c.lo), x2: X(c.hi), y1: yy + 9, y2: yy + 9, stroke: "var(--ink)", "stroke-width": 1.5})); }
+      const neg = v < 0, tx = neg ? Math.min(X(v), k === "did_per_hh_week" ? X(c.lo) : X(v)) - 6 : Math.max(X(v), k === "did_per_hh_week" ? X(c.hi) : 0) + 6;
+      svg.append(el("text", {x: tx, y: yy + 13, class: "val", "text-anchor": neg ? "end" : "start"}, money(v, 2)));
+      const hit = el("rect", {x: 0, y: yy - 2, width: W, height: 22, class: "hit"}); svg.append(hit);
+      hover(hit, () => `<b>${c.campaign_type} · ${nm}</b>${money(v, 2)} extra spend per household per week${k === "did_per_hh_week" ? `<br>95% interval ${money(c.lo, 2)} to ${money(c.hi, 2)}` : ""}<br>${c.campaigns} campaigns · ${Math.round(c.households_exposures).toLocaleString()} household contacts`);
+    });
+  });
+  const a = D.campaigns.find(c => c.campaign_type === "Type A"), b = D.campaigns.find(c => c.campaign_type === "Type B");
+  $("#camp-notes").innerHTML = `<p><b>Targeting, not impact.</b> Before any campaign started, Type A households already spent ${money(a.pre_spend_treated)} a week against ${money(a.pre_spend_all_controls)} for households never targeted, ${pct(a.selection_gap_pct)} more.</p>
+    <p><b>The tempting answer is wrong.</b> Matching on the same weeks you measure against still credits campaigns with about ${money(a.same_window_did)} a week. Households picked for an unusually high stretch of spending drift back down afterwards, so the "matched" comparison flatters the campaign (regression to the mean).</p>
+    <p><b>The defensible answer: not proven.</b> Measured against four holdout weeks that matching never saw, Type A campaigns add ${money(a.did_per_hh_week, 2)} a week (95%: ${money(a.lo, 2)} to ${money(a.hi, 2)}). The smallest effect this data could detect is ${money(a.mde_80, 2)}. Type B comes out negative, but its matched groups still differ by ${pct(b.placebo_gap_pct)} in the holdout weeks, so treat it as inconclusive.</p>
+    <p><b>What it means for cost.</b> Even at the top of its interval, a Type A contact returns ${money(a.gp_per_contact_hi, 2)} of gross profit. Any contact that costs more cannot pay back.</p>
+    <p><b>What to do.</b> Keep a random 10–20% of eligible households out of each campaign. That turns every campaign into a measured one.</p>`;
+  $("#camp-t tbody").innerHTML = D.campaigns.map(c => `<tr><td>${c.campaign_type}<br><span class="muted">${c.campaigns} campaigns</span></td><td class="n">${Math.round(c.households_exposures).toLocaleString()}</td><td class="n">${money(c.did_per_hh_week, 2)}<br><span class="muted">${money(c.lo, 2)} to ${money(c.hi, 2)}</span></td><td class="n">${money(c.mde_80, 2)}</td><td class="n">${money(c.gp_per_contact, 2)}<br><span class="muted">up to ${money(c.gp_per_contact_hi, 2)}</span></td></tr>`).join("");
+}
+
+/* ---------- optimal depth ---------- */
+function drawDepth() {
+  const shares = [...new Set(D.optimal_depth.map(r => r.supplier_share))].sort((a, b) => a - b);
+  const groups = [...new Set(D.optimal_depth.map(r => r.group))];
+  $("#depth thead").innerHTML = `<tr><th rowspan="2">Department</th><th class="n" rowspan="2">Extra discount<br>today</th><th colspan="${shares.length}" style="text-align:center">Best extra discount when the supplier funds</th></tr><tr>${shares.map(v => `<th style="text-align:center">${pct(v)}</th>`).join("")}</tr>`;
+  const cell = v => { const a = Math.min(v / 0.5, 1); const txt = v >= 0.499 ? "50%+" : v < 0.005 ? "0" : pct(v);
+    return `<td class="c"><span style="background:color-mix(in srgb, var(--s1) ${Math.round(a * 70)}%, transparent);color:${a > 0.55 ? "#fff" : "var(--ink)"}">${txt}</span></td>`; };
+  $("#depth tbody").innerHTML = groups.map(g => { const rs = D.optimal_depth.filter(r => r.group === g);
+    return `<tr><td>${g}</td><td class="n">${pct(rs[0].current_extra_discount)}</td>${shares.map(v => cell(rs.find(r => r.supplier_share === v).optimal_extra_discount)).join("")}</tr>`; }).join("");
+  $("#depth-note").textContent = "Extra discount = points below the product's everyday card price. Best depth balances the margin lost on every unit against the extra units each point of discount brings, using the estimated depth response for each department. 50%+ means the model would go deeper than anything observed, so treat it as \"as deep as the supplier will fund\".";
+}
+
+/* ---------- halo ---------- */
+function drawHalo() {
+  const H0 = D.halo, k = 0.10, svg = $("#halo"); svg.innerHTML = "";
+  const rows = [
+    ["Spend on promoted items", H0.coef.promo_items.coef * k, H0.coef.promo_items.se * k],
+    ["Spend on everything else", H0.coef.nonpromo.coef * k, H0.coef.nonpromo.se * k],
+    ["Everything else, 4 weeks before (placebo)", H0.coef.nonpromo.lead_coef * k, H0.coef.nonpromo.lead_se * k]];
+  const W = width(svg), narrow = W < 520, labW = narrow ? 0 : 230, rowH = narrow ? 52 : 40, H = rows.length * rowH + 28;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const lo = -0.4, hi = 0.6, x0 = labW + 8, x1 = W - 60, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+  [-0.4, -0.2, 0, 0.2, 0.4, 0.6].forEach(t => { svg.append(el("line", {x1: X(t), x2: X(t), y1: 0, y2: H - 22, class: t === 0 ? "zero" : "grid"})); svg.append(el("text", {x: X(t), y: H - 6, "text-anchor": "middle"}, money(t, 1))); });
+  rows.forEach(([nm, b, se], i) => {
+    const y = i * rowH + (narrow ? 26 : 16), l = b - 1.96 * se, h = b + 1.96 * se, sig = l > 0 || h < 0;
+    if (narrow) svg.append(el("text", {x: 2, y: y - 10, class: "lab"}, nm)); else svg.append(el("text", {x: labW, y: y + 4, "text-anchor": "end", class: "lab"}, nm));
+    svg.append(el("line", {x1: X(l), x2: X(h), y1: y, y2: y, stroke: "var(--s1)", "stroke-width": 2}));
+    [l, h].forEach(q => svg.append(el("line", {x1: X(q), x2: X(q), y1: y - 5, y2: y + 5, stroke: "var(--s1)", "stroke-width": 2})));
+    svg.append(el("circle", {cx: X(b), cy: y, r: 6, fill: sig ? "var(--s1)" : "var(--surface)", stroke: "var(--s1)", "stroke-width": 2}));
+    svg.append(el("text", {x: X(h) + 8, y: y + 4, class: "val"}, (b >= 0 ? "+" : "") + money(b, 2)));
+    const hit = el("rect", {x: 0, y: y - rowH / 2, width: W, height: rowH - 2, class: "hit"}); svg.append(hit);
+    hover(hit, () => `<b>${nm}</b>${(b >= 0 ? "+" : "") + money(b, 2)} a week per household (95%: ${money(l, 2)} to ${money(h, 2)})${sig ? "" : "<br>Not distinguishable from zero"}`);
+  });
+  const t = H0.coef.trips;
+  $("#halo-notes").innerHTML = `<p><b>How it was tested.</b> Each household's usual basket is fixed from the first half of the year. In the second half, the chain-wide promotion calendar happens to put more or less of that basket on promotion each week. Household and week effects remove each shopper's normal level and seasonal swings.</p>
+    <p><b>What happens.</b> When more of their basket is on promotion, households spend more on the promoted items and make slightly more trips (+${(t.coef * k).toFixed(3)} a week per 10 points). Their spend on everything else does not rise: ${money(rows[1][1], 2)} a week (95%: ${money(rows[1][1] - 1.96 * rows[1][2], 2)} to ${money(rows[1][1] + 1.96 * rows[1][2], 2)}). The placebo shows no effect, as it should.</p>
+    <p><b>In money.</b> The halo is worth ${cents(H0.halo_gp_per_dollar)} per $1 of promotion spend (95%: ${cents(H0.halo_gp_per_dollar_lo)} to ${cents(H0.halo_gp_per_dollar_hi)}). Even the top of that range leaves promotions at <b>${cents(S.roi_with_halo_upper)}</b> per $1, so it cannot rescue them.</p>`;
+}
+
+/* ---------- plan ---------- */
+function drawPlan() {
+  const PM = S.per_million, fixCells = D.cells.filter(c => c.verdict === "Fix").length, killCells = D.cells.filter(c => c.verdict === "Kill");
+  $("#plan").innerHTML = [
+    ["Gate", "Make supplier funding the entry ticket", `Each promotion runs only if its supplier covers at least the break-even share in the table above. Today the retailer funds the whole extra discount in this data and loses ${cents(S.roi).replace("−", "")} on every dollar: ${kmoney(-PM.incr_gp)} per $1M.`,
+      `Break-even funding ranges from <b>${pct(Math.min(...D.cells.map(c => c.breakeven_supplier_share)))}</b> to <b>${pct(Math.max(...D.cells.map(c => c.breakeven_supplier_share)))}</b> by line`],
+    ["Redesign", "Shallower discounts, money moved to what works", `Cut the extra discount by 5 points on the ${fixCells} Fix lines and move budget toward the lines that lose least, keeping traffic-driving categories at 80%+ of today's spend.${killCells.length ? " " + killCells.map(c => c.group + " " + c.promo_type.toLowerCase()).join(", ") + " stop unless a supplier pays." : ""}`,
+      `Per $1M of promotion spend: <b>${kmoney(PM.depth_cut_gain)}</b> from shallower discounts + <b>${kmoney(PM.realloc_gain)}</b> from reallocation = <b>${kmoney(PM.combined_gain)}</b>, ${pct(S.combined_gain_pct_of_loss)} of the loss, with no new money`],
+    ["Prove", "Hold out a random group from every campaign", `Campaign results today can't be separated from who was targeted. A random holdout of eligible households, analysed with each household's previous six weeks as a baseline (CUPED), settles it in one campaign cycle.`,
+      `<b>${S.pilot.find(p => p.detectable_lift === 0.03).households_per_arm_cuped.toLocaleString()}</b> households per group to detect a 3% lift`],
+  ].map(([no, h, p, imp]) => `<div class="step"><div class="no">${no}</div><h3>${h}</h3><p>${p}</p><div class="impact">${imp}</div></div>`).join("");
+  $("#pilot tbody").innerHTML = S.pilot.map(p => `<tr><td>${pct(p.detectable_lift)} more weekly spend</td><td class="n">${p.households_per_arm.toLocaleString()}</td><td class="n">${p.households_per_arm_cuped.toLocaleString()}</td></tr>`).join("");
+}
+
+function drawVal() {
+  const v = S.validation;
+  $("#val tbody").innerHTML = [["This model", v.model_bias, v.model_wape], ["No lift (sales as in a normal week)", v.naive_no_lift_bias, v.naive_no_lift_wape], ["One average uplift for every promotion", v.naive_avg_promo_bias, v.naive_avg_promo_wape]]
+    .map(([n, b, w]) => `<tr><td>${n}</td><td class="n">${(b >= 0 ? "+" : "−") + pct(Math.abs(b), 1)}</td><td class="n">${pct(w, 1)}</td></tr>`).join("");
+  $("#val-note").innerHTML = `On ${v.held_out_events.toLocaleString()} held-out promoted weeks the model's total is within ${pct(Math.abs(v.model_bias), 1)} of actual units. A single average uplift is about as accurate in total, but it cannot say which promotions lift more; the model ranks them with a correlation of ${v.lift_rank_corr.toFixed(2)} against what actually happened, and it separates the would-buy-anyway, cannibalisation and after-effects that the profit calculation needs.`;
+}
+function drawAll() { drawWater(); drawTypes(); drawKfk(); drawDepth(); drawHalo(); drawCamp(); drawPlan(); }
+drawVal(); drawAll();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(drawAll, 120); });
+</script>

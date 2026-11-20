@@ -1,0 +1,41 @@
+version: 2
+models:
+  - name: dim_product
+    description: Products with department margin assumption, regular shelf price and lift-model scope flag.
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+  - name: fct_product_week
+    description: In-scope product x week grid with units, discount depth, display and mailer coverage, and promotion type.
+    tests:
+      - dbt_utils_unique_combo:
+          columns: [product_id, week]
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - relationships: {to: ref('dim_product'), field: product_id}
+      - name: promo_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Mailer + display', 'Mailer feature', 'In-store display', 'Price cut only', 'No promotion']
+      - name: display_share
+        tests: [share_between_0_and_1]
+      - name: feature_share
+        tests: [share_between_0_and_1]
+      - name: usual_depth
+        tests: [share_between_0_and_1]
+      - name: excess_depth
+        tests: [share_between_0_and_1]
+  - name: fct_household_week
+    tests:
+      - dbt_utils_unique_combo:
+          columns: [household_id, week]
+  - name: fct_campaign_exposure
+    columns:
+      - name: campaign_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Type A', 'Type B', 'Type C']

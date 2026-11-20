@@ -1,0 +1,14 @@
+# Raw data comes from the completejourney-py package (see data/README.md)
+data/raw/
+# Rebuilt by run_all.sh
+out/warehouse.duckdb
+out/*.parquet
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+logs/
+__pycache__/
+.pytest_cache/
+.DS_Store
+.venv/
+dbt/.user.yml

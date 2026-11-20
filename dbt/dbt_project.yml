@@ -1,0 +1,17 @@
+name: promo_profit_lab
+version: "1.0.0"
+config-version: 2
+flags:
+  send_anonymous_usage_stats: false
+profile: promo_profit_lab
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+vars:
+  raw_path: "../data/raw"
+  promo_depth_threshold: 0.10     # a price promotion = a discount at least 10 points deeper than the product's usual card discount
+  min_selling_weeks: 26           # products need half a year of sales to estimate a baseline
+models:
+  promo_profit_lab:
+    staging: {+materialized: table}   # tables, so analysis scripts can query them from any folder
+    marts: {+materialized: table}

@@ -1,0 +1,10 @@
+department,gross_margin,source
+GROCERY,0.25,Naveo Commerce 2023 via AgMRC Module 8
+PRODUCE,0.40,Naveo Commerce 2023 via AgMRC Module 8 (40-45%)
+MEAT,0.28,Naveo Commerce 2023 via AgMRC Module 8 (28-30%)
+MEAT-PCKGD,0.28,Assumed equal to meat
+SEAFOOD-PCKGD,0.28,Assumed equal to meat
+DELI,0.40,Naveo Commerce 2023 via AgMRC Module 8
+PASTRY,0.55,Naveo Commerce 2023 via AgMRC Module 8 (bakery)
+DRUG GM,0.30,Assumption (no published figure found)
+NUTRITION,0.30,Assumption (no published figure found)

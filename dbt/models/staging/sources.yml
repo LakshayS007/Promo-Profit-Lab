@@ -1,0 +1,13 @@
+version: 2
+sources:
+  - name: raw
+    meta: {external_location: "{{ var('raw_path') }}/{name}.parquet"}
+    tables:
+      - name: transactions
+      - name: products
+      - name: promotions
+      - name: campaigns
+      - name: campaign_descriptions
+      - name: coupons
+      - name: coupon_redemptions
+      - name: demographics

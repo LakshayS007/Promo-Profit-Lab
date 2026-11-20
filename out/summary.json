@@ -1,0 +1,461 @@
+{
+ "products": 2186,
+ "promo_weeks": 23555,
+ "shelf_value": 1937090.4700000002,
+ "promo_spend": 166370.734964,
+ "promo_spend_in_cells": 163927.57029099995,
+ "incr_gp": -54407.055375793236,
+ "roi": -0.3270229910781247,
+ "roi_lo": -0.3509253016545909,
+ "roi_hi": -0.30988368217831874,
+ "subsidised_share": 0.45404136315055943,
+ "lift_pct": 1.2024425110987114,
+ "breakeven_supplier_share": 0.3270229910781247,
+ "optimiser_gain": 7575.345901181856,
+ "optimiser_gain_per_100": 4.621154262052625,
+ "depth_cut_gain": 17897.012154021882,
+ "combined_gain": 25472.35805520374,
+ "combined_gain_pct_of_loss": 0.46818115553698736,
+ "per_million": {
+  "incr_gp": -327022.9910781248,
+  "combined_gain": 153106.00185011837,
+  "realloc_gain": 45532.923220066565,
+  "depth_cut_gain": 107573.07863005181,
+  "stop_kill_saving": -0.0
+ },
+ "stop_kill_saving": -0.0,
+ "everyday_share_of_discount": 0.510571255596739,
+ "all_card_discount_core": 354382.97000000335,
+ "validation": {
+  "held_out_events": 4709,
+  "smearing_factor": 1.153607687905844,
+  "model_wape": 0.43725398837314794,
+  "model_bias": -0.017866704491323104,
+  "model_wape_no_smearing": 0.4267249351531039,
+  "model_bias_no_smearing": -0.1575914969568074,
+  "lift_rank_corr": 0.5565718979344539,
+  "naive_no_lift_wape": 0.6155003353813011,
+  "naive_no_lift_bias": -0.5404787377610377,
+  "naive_avg_promo_wape": 0.4283842638850992,
+  "naive_avg_promo_bias": -0.005984836286688777
+ },
+ "halo": {
+  "halo_gp_per_dollar": -0.037540633113961004,
+  "halo_gp_per_dollar_lo": -0.11329730464113869,
+  "halo_gp_per_dollar_hi": 0.03821603841321668,
+  "coef": {
+   "nonpromo": {
+    "coef": -0.9380215662642984,
+    "se": 0.9657751900994225,
+    "lead_coef": 0.40507715492462554,
+    "lead_se": 1.2681467297173246
+   },
+   "promo_items": {
+    "coef": 3.833221328034498,
+    "se": 0.3150136615003716,
+    "lead_coef": -0.0310362069046167,
+    "lead_se": 0.3061876615199109
+   },
+   "trips": {
+    "coef": 0.11460412859956412,
+    "se": 0.03378252945571119,
+    "lead_coef": 0.007920049571942294,
+    "lead_se": 0.03233928676582061
+   }
+  },
+  "mean_exposure": 0.22605077284748945
+ },
+ "roi_with_halo_upper": -0.288806952664908,
+ "optimal_depth": [
+  {
+   "group": "Deli & bakery",
+   "supplier_share": 0.0,
+   "depth_coef": 0.9356046028656289,
+   "depth_coef_se": 0.2927526804971521,
+   "margin": 0.4291909897341512,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1664982258253095
+  },
+  {
+   "group": "Deli & bakery",
+   "supplier_share": 0.25,
+   "depth_coef": 0.9356046028656289,
+   "depth_coef_se": 0.2927526804971521,
+   "margin": 0.4291909897341512,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1664982258253095
+  },
+  {
+   "group": "Deli & bakery",
+   "supplier_share": 0.5,
+   "depth_coef": 0.9356046028656289,
+   "depth_coef_se": 0.2927526804971521,
+   "margin": 0.4291909897341512,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1664982258253095
+  },
+  {
+   "group": "Deli & bakery",
+   "supplier_share": 0.75,
+   "depth_coef": 0.9356046028656289,
+   "depth_coef_se": 0.2927526804971521,
+   "margin": 0.4291909897341512,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.1664982258253095
+  },
+  {
+   "group": "Fresh meat",
+   "supplier_share": 0.0,
+   "depth_coef": 2.138210170311733,
+   "depth_coef_se": 0.3986858041115044,
+   "margin": 0.28,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1925855331259842
+  },
+  {
+   "group": "Fresh meat",
+   "supplier_share": 0.25,
+   "depth_coef": 2.138210170311733,
+   "depth_coef_se": 0.3986858041115044,
+   "margin": 0.28,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1925855331259842
+  },
+  {
+   "group": "Fresh meat",
+   "supplier_share": 0.5,
+   "depth_coef": 2.138210170311733,
+   "depth_coef_se": 0.3986858041115044,
+   "margin": 0.28,
+   "optimal_extra_discount": 0.0923191265832357,
+   "current_extra_discount": 0.1925855331259842
+  },
+  {
+   "group": "Fresh meat",
+   "supplier_share": 0.75,
+   "depth_coef": 2.138210170311733,
+   "depth_coef_se": 0.3986858041115044,
+   "margin": 0.28,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.1925855331259842
+  },
+  {
+   "group": "Grocery",
+   "supplier_share": 0.0,
+   "depth_coef": 2.1691650455318894,
+   "depth_coef_se": 0.0751402680047934,
+   "margin": 0.25,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1855252734829641
+  },
+  {
+   "group": "Grocery",
+   "supplier_share": 0.25,
+   "depth_coef": 2.1691650455318894,
+   "depth_coef_se": 0.0751402680047934,
+   "margin": 0.25,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.1855252734829641
+  },
+  {
+   "group": "Grocery",
+   "supplier_share": 0.5,
+   "depth_coef": 2.1691650455318894,
+   "depth_coef_se": 0.0751402680047934,
+   "margin": 0.25,
+   "optimal_extra_discount": 0.0389931245389419,
+   "current_extra_discount": 0.1855252734829641
+  },
+  {
+   "group": "Grocery",
+   "supplier_share": 0.75,
+   "depth_coef": 2.1691650455318894,
+   "depth_coef_se": 0.0751402680047934,
+   "margin": 0.25,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.1855252734829641
+  },
+  {
+   "group": "Health, beauty & GM",
+   "supplier_share": 0.0,
+   "depth_coef": 1.939788305632628,
+   "depth_coef_se": 0.241107711934449,
+   "margin": 0.2999999999999999,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2513288441326413
+  },
+  {
+   "group": "Health, beauty & GM",
+   "supplier_share": 0.25,
+   "depth_coef": 1.939788305632628,
+   "depth_coef_se": 0.241107711934449,
+   "margin": 0.2999999999999999,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2513288441326413
+  },
+  {
+   "group": "Health, beauty & GM",
+   "supplier_share": 0.5,
+   "depth_coef": 1.939788305632628,
+   "depth_coef_se": 0.241107711934449,
+   "margin": 0.2999999999999999,
+   "optimal_extra_discount": 0.0844798284966111,
+   "current_extra_discount": 0.2513288441326413
+  },
+  {
+   "group": "Health, beauty & GM",
+   "supplier_share": 0.75,
+   "depth_coef": 1.939788305632628,
+   "depth_coef_se": 0.241107711934449,
+   "margin": 0.2999999999999999,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.2513288441326413
+  },
+  {
+   "group": "Packaged meat & seafood",
+   "supplier_share": 0.0,
+   "depth_coef": 2.2950522260344006,
+   "depth_coef_se": 0.1903468838698352,
+   "margin": 0.2799999999999999,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2101015767136294
+  },
+  {
+   "group": "Packaged meat & seafood",
+   "supplier_share": 0.25,
+   "depth_coef": 2.2950522260344006,
+   "depth_coef_se": 0.1903468838698352,
+   "margin": 0.2799999999999999,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2101015767136294
+  },
+  {
+   "group": "Packaged meat & seafood",
+   "supplier_share": 0.5,
+   "depth_coef": 2.2950522260344006,
+   "depth_coef_se": 0.1903468838698352,
+   "margin": 0.2799999999999999,
+   "optimal_extra_discount": 0.1242800679408107,
+   "current_extra_discount": 0.2101015767136294
+  },
+  {
+   "group": "Packaged meat & seafood",
+   "supplier_share": 0.75,
+   "depth_coef": 2.2950522260344006,
+   "depth_coef_se": 0.1903468838698352,
+   "margin": 0.2799999999999999,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.2101015767136294
+  },
+  {
+   "group": "Produce",
+   "supplier_share": 0.0,
+   "depth_coef": 1.7508555194161948,
+   "depth_coef_se": 0.3012450620113089,
+   "margin": 0.4000000000000001,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2577955890671141
+  },
+  {
+   "group": "Produce",
+   "supplier_share": 0.25,
+   "depth_coef": 1.7508555194161948,
+   "depth_coef_se": 0.3012450620113089,
+   "margin": 0.4000000000000001,
+   "optimal_extra_discount": 0.0,
+   "current_extra_discount": 0.2577955890671141
+  },
+  {
+   "group": "Produce",
+   "supplier_share": 0.5,
+   "depth_coef": 1.7508555194161948,
+   "depth_coef_se": 0.3012450620113089,
+   "margin": 0.4000000000000001,
+   "optimal_extra_discount": 0.2288506453499716,
+   "current_extra_discount": 0.2577955890671141
+  },
+  {
+   "group": "Produce",
+   "supplier_share": 0.75,
+   "depth_coef": 1.7508555194161948,
+   "depth_coef_se": 0.3012450620113089,
+   "margin": 0.4000000000000001,
+   "optimal_extra_discount": 0.5,
+   "current_extra_discount": 0.2577955890671141
+  }
+ ],
+ "campaign_economics": {
+  "Type A": {
+   "mde_80": 2.117860317045866,
+   "gp_per_contact": 0.7874731935496303,
+   "gp_per_contact_hi": 4.260983316369277,
+   "weeks_per_contact": 8.34479610468655
+  },
+  "Type B": {
+   "mde_80": 3.3746907217523447,
+   "gp_per_contact": -6.604364807801909,
+   "gp_per_contact_hi": -2.775887713727547,
+   "weeks_per_contact": 5.70303867403315
+  },
+  "Type C": {
+   "mde_80": 6.446073725539075,
+   "gp_per_contact": 0.5707419273332723,
+   "gp_per_contact_hi": 10.608569688306565,
+   "weeks_per_contact": 7.9381818181818184
+  }
+ },
+ "verdict_counts": {
+  "Fix": 8,
+  "Keep": 6
+ },
+ "campaign_selection_gap": {
+  "Type A": 2.52257118252045,
+  "Type B": 3.934635096940025,
+  "Type C": 4.630893398406808
+ },
+ "campaign_did": {
+  "Type A": {
+   "naive_gap": 40.41869347350416,
+   "same_window_did": 6.8441389354874,
+   "did_per_hh_week": 0.3370759636774738,
+   "lo": -1.141101015349231,
+   "hi": 1.8239034285149816,
+   "placebo_gap_pct": 0.0867195198631601
+  },
+  "Type B": {
+   "naive_gap": 60.539802948300206,
+   "same_window_did": 5.800971583111326,
+   "did_per_hh_week": -4.136494712198273,
+   "lo": -6.463181575767065,
+   "hi": -1.7386145653137812,
+   "placebo_gap_pct": 0.1554411337435259
+  },
+  "Type C": {
+   "naive_gap": 67.2546330867324,
+   "same_window_did": 13.17107821804856,
+   "did_per_hh_week": 0.256818598259279,
+   "lo": -4.250930666745409,
+   "hi": 4.773572549009297,
+   "placebo_gap_pct": 0.0904480020633316
+  }
+ },
+ "pilot": [
+  {
+   "detectable_lift": 0.02,
+   "households_per_arm": 58833,
+   "households_per_arm_cuped": 17656
+  },
+  {
+   "detectable_lift": 0.03,
+   "households_per_arm": 26149,
+   "households_per_arm_cuped": 7848
+  },
+  {
+   "detectable_lift": 0.05,
+   "households_per_arm": 9415,
+   "households_per_arm_cuped": 2826
+  },
+  {
+   "detectable_lift": 0.1,
+   "households_per_arm": 2355,
+   "households_per_arm_cuped": 707
+  }
+ ],
+ "cuped_rho": 0.8365971169090969,
+ "six_week_mean_spend": 35.16878016290896,
+ "six_week_sd": 43.06005398210496,
+ "sensitivity": [
+  {
+   "margin_shift": -0.1,
+   "vendor_share": 0.0,
+   "roi": -0.5658148045315402,
+   "incr_gp": -94135.02488342434
+  },
+  {
+   "margin_shift": -0.1,
+   "vendor_share": 0.25,
+   "roi": -0.3158148045315402,
+   "incr_gp": -52542.34114242435
+  },
+  {
+   "margin_shift": -0.1,
+   "vendor_share": 0.5,
+   "roi": -0.0658148045315402,
+   "incr_gp": -10949.657401424349
+  },
+  {
+   "margin_shift": -0.05,
+   "vendor_share": 0.0,
+   "roi": -0.4464188978048325,
+   "incr_gp": -74271.0401296088
+  },
+  {
+   "margin_shift": -0.05,
+   "vendor_share": 0.25,
+   "roi": -0.1964188978048324,
+   "incr_gp": -32678.356388608783
+  },
+  {
+   "margin_shift": -0.05,
+   "vendor_share": 0.5,
+   "roi": 0.0535811021951675,
+   "incr_gp": 8914.327352391216
+  },
+  {
+   "margin_shift": 0.0,
+   "vendor_share": 0.0,
+   "roi": -0.3270229910781247,
+   "incr_gp": -54407.05537579324
+  },
+  {
+   "margin_shift": 0.0,
+   "vendor_share": 0.25,
+   "roi": -0.0770229910781247,
+   "incr_gp": -12814.371634793228
+  },
+  {
+   "margin_shift": 0.0,
+   "vendor_share": 0.5,
+   "roi": 0.1729770089218752,
+   "incr_gp": 28778.31210620677
+  },
+  {
+   "margin_shift": 0.05,
+   "vendor_share": 0.0,
+   "roi": -0.207627084351417,
+   "incr_gp": -34543.07062197767
+  },
+  {
+   "margin_shift": 0.05,
+   "vendor_share": 0.25,
+   "roi": 0.042372915648583,
+   "incr_gp": 7049.61311902233
+  },
+  {
+   "margin_shift": 0.05,
+   "vendor_share": 0.5,
+   "roi": 0.292372915648583,
+   "incr_gp": 48642.29686002233
+  },
+  {
+   "margin_shift": 0.1,
+   "vendor_share": 0.0,
+   "roi": -0.0882311776247092,
+   "incr_gp": -14679.085868162114
+  },
+  {
+   "margin_shift": 0.1,
+   "vendor_share": 0.25,
+   "roi": 0.1617688223752907,
+   "incr_gp": 26913.597872837883
+  },
+  {
+   "margin_shift": 0.1,
+   "vendor_share": 0.5,
+   "roi": 0.4117688223752907,
+   "incr_gp": 68506.28161383788
+  }
+ ],
+ "traffic_threshold": 0.35900743962646803,
+ "keep_max_funding": 0.25
+}
