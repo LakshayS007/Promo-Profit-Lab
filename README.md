@@ -114,7 +114,7 @@ data/           How to get the raw data
 
 ## How this was built
 
-Designed and analysed by Lakshay Saini, with an AI assistant (Claude) used for code drafting, review and documentation. Every number is produced by the code in this repository and checked by the tests.
+Designed, analysed, coded and reviewed by Lakshay Saini, with an AI assistant used for documentation. Every number is produced by the code in this repository and checked by the tests.
 
 ## Data
 
